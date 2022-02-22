@@ -8,10 +8,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "dish_content")
 public class DishContent implements Serializable {
+
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "amount_of_ingredient")

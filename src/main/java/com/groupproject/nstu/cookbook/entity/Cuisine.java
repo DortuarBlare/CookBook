@@ -10,10 +10,11 @@ import java.util.List;
 @Entity
 @Table(name = "cuisine")
 public class Cuisine implements Serializable {
+
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
@@ -25,6 +26,11 @@ public class Cuisine implements Serializable {
     public Cuisine() {}
 
     public Cuisine(String name) {
+        this.name = name;
+    }
+
+    public Cuisine(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -51,6 +57,14 @@ public class Cuisine implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Dish> getDishList() {
+        return dishList;
+    }
+
+    public void setDishList(List<Dish> dishList) {
+        this.dishList = dishList;
     }
 
     @Override

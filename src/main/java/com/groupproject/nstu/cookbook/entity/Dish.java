@@ -4,9 +4,11 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "Dish")
+@Table(name = "dish")
 public class Dish implements Serializable {
 
     @Id
@@ -21,11 +23,26 @@ public class Dish implements Serializable {
     @Column(name = "cooking_description")
     private String cookingDescription;
 
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DishContent> dishContentList = new ArrayList<>();
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "type_id")
     private DishType dishType;
 
-    public Dish() {
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "cuisine_id")
+    private Cuisine dishCuisine;
+
+    public Dish() {}
+
+    public void addDishContent(DishContent dishContent) {
+        dishContent.setDish(this);
+        dishContentList.add(dishContent);
+    }
+
+    public void removeDishContent(DishContent dishContent) {
+        dishContentList.remove(dishContent);
     }
 
     public Long getId() {
@@ -58,6 +75,14 @@ public class Dish implements Serializable {
 
     public void setDishType(DishType dishType) {
         this.dishType = dishType;
+    }
+
+    public Cuisine getDishCuisine() {
+        return dishCuisine;
+    }
+
+    public void setDishCuisine(Cuisine dishCuisine) {
+        this.dishCuisine = dishCuisine;
     }
 
     @Override

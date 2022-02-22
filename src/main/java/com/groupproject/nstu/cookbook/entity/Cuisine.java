@@ -8,34 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "dish_type")
-public class DishType implements Serializable {
-
+@Table(name = "cuisine")
+public class Cuisine implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "dishType", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "dishCuisine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dish> dishList = new ArrayList<>();
 
-    public DishType() {}
+    public Cuisine() {}
 
-    public DishType(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public DishType(String name) {
+    public Cuisine(String name) {
         this.name = name;
     }
 
     public void addDish(Dish dish) {
-        dish.setDishType(this);
+        dish.setDishCuisine(this);
         dishList.add(dish);
     }
 
@@ -61,7 +55,7 @@ public class DishType implements Serializable {
 
     @Override
     public String toString() {
-        return "DishType{" +
+        return "Cuisine{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

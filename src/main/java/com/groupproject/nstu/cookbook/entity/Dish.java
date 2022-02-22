@@ -4,12 +4,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "Dish_type")
-public class DishType implements Serializable {
+@Table(name = "Dish")
+public class Dish implements Serializable {
 
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
@@ -20,19 +18,14 @@ public class DishType implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "dishType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dish> dishList = new ArrayList<>();
+    @Column(name = "cooking_description")
+    private String cookingDescription;
 
-    public DishType() {
-    }
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "type_id")
+    private DishType dishType;
 
-    public DishType(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public DishType(String name) {
-        this.name = name;
+    public Dish() {
     }
 
     public Long getId() {
@@ -51,20 +44,28 @@ public class DishType implements Serializable {
         this.name = name;
     }
 
-    public void addDish(Dish dish) {
-        dish.setDishType(this);
-        dishList.add(dish);
+    public String getCookingDescription() {
+        return cookingDescription;
     }
 
-    public void removeDish(Dish dish) {
-        dishList.remove(dish);
+    public void setCookingDescription(String cookingDescription) {
+        this.cookingDescription = cookingDescription;
+    }
+
+    public DishType getDishType() {
+        return dishType;
+    }
+
+    public void setDishType(DishType dishType) {
+        this.dishType = dishType;
     }
 
     @Override
     public String toString() {
-        return "DishType{" +
+        return "Dish{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", cookingDescription='" + cookingDescription + '\'' +
                 '}';
     }
 }

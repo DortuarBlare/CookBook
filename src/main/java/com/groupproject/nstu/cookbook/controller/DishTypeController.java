@@ -1,10 +1,8 @@
 package com.groupproject.nstu.cookbook.controller;
 
-import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.service.DishTypeServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class DishTypeController {
         this.dishTypeService = dishTypeService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createDishType")
     public void createDishType(@RequestBody DishType dishType) {
         dishTypeService.createDishType(dishType);
     }
@@ -32,7 +30,7 @@ public class DishTypeController {
     }
 
     @GetMapping("/find/{id}")
-    public Optional<DishType> findDishTypeById(@PathVariable Long id){
+    public Optional<DishType> findDishTypeById(@PathVariable Long id) {
         return dishTypeService.findDishTypeById(id);
     }
 }

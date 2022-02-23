@@ -1,5 +1,7 @@
 package com.groupproject.nstu.cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table (name = "ingredient")
+@Table (name = "ingredient_table")
 public class Ingredient implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
@@ -23,6 +25,8 @@ public class Ingredient implements Serializable {
     private String measure;
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonManagedReference
+    @JsonIgnore
     private List<DishContent> dishContentList = new ArrayList<>();
 
     public Ingredient() {}
@@ -71,5 +75,14 @@ public class Ingredient implements Serializable {
 
     public void setDishContentList(List<DishContent> dishContentList) {
         this.dishContentList = dishContentList;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", measure='" + measure + '\'' +
+                '}';
     }
 }

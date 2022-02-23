@@ -1,5 +1,8 @@
 package com.groupproject.nstu.cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "dish")
+@Table(name = "dish_table")
 public class Dish implements Serializable {
 
     @Id
@@ -24,14 +27,18 @@ public class Dish implements Serializable {
     private String cookingDescription;
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonManagedReference
+    @JsonIgnore
     private List<DishContent> dishContentList = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "type_id")
+//    @JsonBackReference
     private DishType dishType;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cuisine_id")
+//    @JsonBackReference
     private Cuisine dishCuisine;
 
     public Dish() {}
@@ -91,6 +98,8 @@ public class Dish implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", cookingDescription='" + cookingDescription + '\'' +
+                ", dishType=" + dishType +
+                ", dishCuisine=" + dishCuisine +
                 '}';
     }
 }

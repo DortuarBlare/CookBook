@@ -1,5 +1,7 @@
 package com.groupproject.nstu.cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -20,10 +22,12 @@ public class DishContent implements Serializable {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "dish_id")
+//    @JsonBackReference
     private Dish dish;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "ingredient_id")
+//    @JsonBackReference
     private Ingredient ingredient;
 
     public Long getId() {

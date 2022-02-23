@@ -1,5 +1,7 @@
 package com.groupproject.nstu.cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -21,7 +23,9 @@ public class DishType implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "dishType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dish> dishList = new ArrayList<>();
+//    @JsonManagedReference
+    @JsonIgnore
+    private List<Dish> dishTypeDishList = new ArrayList<>();
 
     public DishType() {}
 
@@ -36,11 +40,11 @@ public class DishType implements Serializable {
 
     public void addDish(Dish dish) {
         dish.setDishType(this);
-        dishList.add(dish);
+        dishTypeDishList.add(dish);
     }
 
     public void removeDish(Dish dish) {
-        dishList.remove(dish);
+        dishTypeDishList.remove(dish);
     }
 
     public Long getId() {
@@ -57,6 +61,14 @@ public class DishType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Dish> getDishTypeDishList() {
+        return dishTypeDishList;
+    }
+
+    public void setDishTypeDishList(List<Dish> dishTypeDishList) {
+        this.dishTypeDishList = dishTypeDishList;
     }
 
     @Override

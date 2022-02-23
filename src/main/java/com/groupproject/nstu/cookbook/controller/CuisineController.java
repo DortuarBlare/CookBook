@@ -19,7 +19,7 @@ public class CuisineController {
         this.cuisineService = cuisineService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createCuisine")
     public void createCuisine(@RequestBody Cuisine cuisine) {
         cuisineService.createCuisine(cuisine);
     }

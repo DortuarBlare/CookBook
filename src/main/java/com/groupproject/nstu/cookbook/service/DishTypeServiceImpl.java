@@ -1,11 +1,8 @@
 package com.groupproject.nstu.cookbook.service;
 
-import com.groupproject.nstu.cookbook.entity.DishContent;
 import com.groupproject.nstu.cookbook.entity.DishType;
-import com.groupproject.nstu.cookbook.repository.DishContentRepository;
 import com.groupproject.nstu.cookbook.repository.DishTypeRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.DishTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +23,8 @@ public class DishTypeServiceImpl implements DishTypeService {
     }
 
     @Override
-    public void createDishType(DishType dishContent) {
-        dishTypeRepository.save(dishContent);
+    public void createDishType(DishType dishType) {
+        dishTypeRepository.save(dishType);
     }
 
     @Override

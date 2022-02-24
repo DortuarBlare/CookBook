@@ -31,4 +31,11 @@ public class DishTypeServiceImpl implements DishTypeService {
     public List<DishType> getAll() {
         return dishTypeRepository.findAll();
     }
+
+    @Override
+    public Optional<DishType> findDishTypeByName(String name) {
+        return dishTypeRepository.getDishTypeByName(name);
+    }
+
+
 }

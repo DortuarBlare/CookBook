@@ -13,4 +13,6 @@ public interface CuisineService {
 
     Optional<Cuisine> findCuisineById(Long id);
 
+    Optional<Cuisine> findCuisineByName(String name);
+
 }

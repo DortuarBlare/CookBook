@@ -1,5 +1,6 @@
 package com.groupproject.nstu.cookbook.service.interfaces;
 
+import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
 
 import java.util.List;
@@ -12,5 +13,7 @@ public interface DishTypeService {
     void createDishType(DishType dishType);
 
     List<DishType> getAll();
+
+    Optional<DishType> findDishTypeByName(String name);
 
 }

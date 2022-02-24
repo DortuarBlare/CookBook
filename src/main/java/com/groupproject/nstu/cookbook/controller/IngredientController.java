@@ -1,5 +1,6 @@
 package com.groupproject.nstu.cookbook.controller;
 
+import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Ingredient;
 import com.groupproject.nstu.cookbook.service.IngredientServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,4 +34,10 @@ public class IngredientController {
     public List<Ingredient> getAllIngredients(){
         return ingredientService.getAll();
     }
+
+    @GetMapping("/findByName/{name}")
+    public Optional<Ingredient> findIngredientByName(@PathVariable String name) {
+        return ingredientService.findIngredientByName(name);
+    }
+
 }

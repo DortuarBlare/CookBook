@@ -1,5 +1,6 @@
 package com.groupproject.nstu.cookbook.controller;
 
+import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.service.DishTypeServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,5 +33,10 @@ public class DishTypeController {
     @GetMapping("/find/{id}")
     public Optional<DishType> findDishTypeById(@PathVariable Long id) {
         return dishTypeService.findDishTypeById(id);
+    }
+
+    @GetMapping("/findByName/{name}")
+    public Optional<DishType> findDishTypeByName(@PathVariable String name) {
+        return dishTypeService.findDishTypeByName(name);
     }
 }

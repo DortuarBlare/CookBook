@@ -3,6 +3,7 @@ package com.groupproject.nstu.cookbook.service;
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.repository.CuisineRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.CuisineService;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,11 @@ public class CuisineServiceImpl implements CuisineService {
     @Override
     public Optional<Cuisine> findCuisineById(Long id){
         return cuisineRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Cuisine> findCuisineByName(String name) {
+        return cuisineRepository.getCuisineByName(name);
     }
 
 }

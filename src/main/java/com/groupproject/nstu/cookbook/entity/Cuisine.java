@@ -19,7 +19,7 @@ public class Cuisine implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "dishCuisine", cascade = CascadeType.ALL, orphanRemoval = true)

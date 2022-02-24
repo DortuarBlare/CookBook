@@ -29,8 +29,13 @@ public class CuisineController {
         return cuisineService.getAll();
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/findById/{id}")
     public Optional<Cuisine> findCuisineById(@PathVariable Long id){
         return cuisineService.findCuisineById(id);
+    }
+
+    @GetMapping("/findByName/{name}")
+    public Optional<Cuisine> findCuisineByName(@PathVariable String name) {
+        return cuisineService.findCuisineByName(name);
     }
 }

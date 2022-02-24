@@ -1,5 +1,6 @@
 package com.groupproject.nstu.cookbook.controller;
 
+import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
 import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
@@ -38,5 +39,10 @@ public class DishController {
     @GetMapping("/findByName/{name}")
     public Optional<Dish> findDishByName(@PathVariable String name) {
         return dishService.findDishByName(name);
+    }
+
+    @GetMapping("/findByNames")
+    public List<Dish> findDishByNames(String names) {
+        return dishService.findDishByNames(names);
     }
 }

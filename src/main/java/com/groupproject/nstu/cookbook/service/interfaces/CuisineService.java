@@ -15,4 +15,6 @@ public interface CuisineService {
 
     Optional<Cuisine> findCuisineByName(String name);
 
+    List<Cuisine> findCuisineByNames(String names);
+
 }

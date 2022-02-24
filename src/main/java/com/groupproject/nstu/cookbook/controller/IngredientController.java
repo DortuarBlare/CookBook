@@ -40,4 +40,9 @@ public class IngredientController {
         return ingredientService.findIngredientByName(name);
     }
 
+    @GetMapping("/findByNames")
+    public List<Ingredient> findIngredientByNames(String names) {
+        return ingredientService.findIngredientByNames(names);
+    }
+
 }

@@ -16,4 +16,5 @@ public interface IngredientService {
 
     Optional<Ingredient> findIngredientByName(String name);
 
+    List<Ingredient> findIngredientByNames(String names);
 }

@@ -30,12 +30,17 @@ public class CuisineController {
     }
 
     @GetMapping("/findById/{id}")
-    public Optional<Cuisine> findCuisineById(@PathVariable Long id){
+    public Optional<Cuisine> findCuisineById(@PathVariable Long id) {
         return cuisineService.findCuisineById(id);
     }
 
     @GetMapping("/findByName/{name}")
     public Optional<Cuisine> findCuisineByName(@PathVariable String name) {
         return cuisineService.findCuisineByName(name);
+    }
+
+    @GetMapping("/findByNames")
+    public List<Cuisine> findCuisineByNames(String names) {
+        return cuisineService.findCuisineByNames(names);
     }
 }

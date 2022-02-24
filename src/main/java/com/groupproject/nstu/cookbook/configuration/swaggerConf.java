@@ -14,7 +14,7 @@ public class swaggerConf {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Equipment register")
+                                .title("Cook Book")
                                 .version("1.5.9")
                                 .contact(
                                         new Contact()

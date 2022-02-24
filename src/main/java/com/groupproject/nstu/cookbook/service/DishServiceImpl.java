@@ -31,4 +31,9 @@ public class DishServiceImpl implements DishService {
     public List<Dish> getAll() {
         return dishRepository.findAll();
     }
+
+    @Override
+    public Optional<Dish> findDishByName(String name) {
+        return dishRepository.getDishByName(name);
+    }
 }

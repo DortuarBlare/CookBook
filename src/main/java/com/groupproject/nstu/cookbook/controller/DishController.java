@@ -1,6 +1,7 @@
 package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Dish;
+import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,10 @@ public class DishController {
     @GetMapping("/find/{id}")
     public Optional<Dish> findDishById(@PathVariable Long id){
         return dishService.findDishById(id);
+    }
+
+    @GetMapping("/findByName/{name}")
+    public Optional<Dish> findDishByName(@PathVariable String name) {
+        return dishService.findDishByName(name);
     }
 }

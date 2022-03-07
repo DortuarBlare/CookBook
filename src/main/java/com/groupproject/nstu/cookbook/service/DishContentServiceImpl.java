@@ -73,48 +73,6 @@ public class DishContentServiceImpl implements DishContentService {
 
         return resultList;
 
-
-//        Specification<DishContent> specification = (root, criteriaQuery, criteriaBuilder) -> {
-//            String[] splitNames = ingredients.split(" ");
-//            List<Predicate> predicates = new ArrayList<Predicate>();
-//
-//            for (Ingredient ingredient : ingredientList) {
-//                predicates.add(criteriaBuilder.equal(root.<Ingredient>get("ingredient"), ingredient));
-//            }
-//            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("dish")));
-//            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
-//        };
-
-//        List<DishContent> dishContentList = dishContentRepository.findAll(specification);
-
-//        long tempDishId;
-//        int amountOfMatchedIngredients = 0;
-//
-//
-//        for(int i = 0; i < dishContentList.size(); i++){
-//
-//            if(dishContentList.get(i+1).getDish().getId() != null) {
-//                if (dishContentList.get(i).getDish().getId() == dishContentList.get(i+1).getDish().getId()){
-//
-//                    amountOfMatchedIngredients++;
-//
-//                }
-//
-//            }
-//
-//        }
-//
-//
-//        for(DishContent dishContent: dishContentList){
-//
-//            tempDishId = dishContent.getDish().getId();
-//
-//            if(dishContent.getId() != dishContentList.get(0).getDish().getId())
-//                return null;
-//        }
-//
-//        return dishContentList;
-
     }
 
 }

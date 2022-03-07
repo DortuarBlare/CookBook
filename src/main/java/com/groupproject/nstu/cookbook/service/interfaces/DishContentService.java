@@ -12,4 +12,6 @@ public interface DishContentService {
     Optional<DishContent> findDishContentById(Long id);
 
     List<DishContent> getAll();
+
+    List<DishContent> findDishContentByIngredients(String ingredients);
 }

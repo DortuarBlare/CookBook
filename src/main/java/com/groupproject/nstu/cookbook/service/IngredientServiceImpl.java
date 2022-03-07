@@ -45,17 +45,19 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public List<Ingredient> findIngredientByNames(String names) {
-        Specification<Ingredient> specification = (root, criteriaQuery, criteriaBuilder) -> {
-            String[] splitNames = names.split(" ");
-            List<Predicate> predicates = new ArrayList<Predicate>();
+        if (names != "") {
+            Specification<Ingredient> specification = (root, criteriaQuery, criteriaBuilder) -> {
+                String[] splitNames = names.split(" ");
+                List<Predicate> predicates = new ArrayList<Predicate>();
 
-            for (String splitName : splitNames) {
-                predicates.add(criteriaBuilder.equal(root.<String>get("name"), splitName));
-            }
+                for (String splitName : splitNames) {
+                    predicates.add(criteriaBuilder.equal(root.<String>get("name"), splitName));
+                }
 
-            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
-        };
-
-        return ingredientRepository.findAll(specification);
+                return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return ingredientRepository.findAll(specification);
+        }
+        return null;
     }
 }

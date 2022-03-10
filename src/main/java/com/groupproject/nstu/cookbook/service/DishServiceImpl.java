@@ -1,16 +1,21 @@
 package com.groupproject.nstu.cookbook.service;
 
+import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
 import com.groupproject.nstu.cookbook.entity.DishContent;
 import com.groupproject.nstu.cookbook.entity.Ingredient;
 import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import com.groupproject.nstu.cookbook.entity.response.DishResponseIngredient;
+import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.repository.DishRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.DishService;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,11 +26,15 @@ public class DishServiceImpl implements DishService {
     private final DishRepository dishRepository;
     private final IngredientServiceImpl ingredientService;
     private final DishContentServiceImpl dishContentService;
+    private final DishTypeServiceImpl dishTypeService;
+    private final CuisineServiceImpl cuisineService;
 
-    public DishServiceImpl(DishRepository dishRepository, IngredientServiceImpl ingredientService, DishContentServiceImpl dishContentService) {
+    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService, DishContentServiceImpl dishContentService) {
         this.dishRepository = dishRepository;
         this.ingredientService = ingredientService;
         this.dishContentService = dishContentService;
+        this.dishTypeService = dishTypeService;
+        this.cuisineService = cuisineService;
     }
 
     @Override
@@ -118,5 +127,60 @@ public class DishServiceImpl implements DishService {
 
         return resultList;
 
+    }
+
+    @Override
+    public ResponseEntity updateDish(Long id, Dish newDish) {
+        try {
+            Optional<Dish> dish = findDishById(id);
+            if (dish.isPresent())
+            {
+                // Обновление названия блюда
+                Optional<Dish> dishForConstraintCheck = findDishByName(newDish.getName());
+                if (dishForConstraintCheck.isPresent())
+                    throw new SQLException("This dish already exist");
+                else
+                    dish.get().setName(newDish.getName());
+
+                // Обновление описания приготовления
+                dish.get().setCookingDescription(newDish.getCookingDescription());
+
+                // Обновление типа блюда
+                Optional<DishType> dishTypeForCheck = dishTypeService.findDishTypeById(newDish.getDishType().getId());
+                if (dishTypeForCheck.isPresent())
+                    dish.get().setDishType(dishTypeForCheck.get());
+                else
+                    throw new Exception("Didn't find such dish type");
+
+                // Обновление кухни блюда
+                Optional<Cuisine> cuisineForCheck = cuisineService.findCuisineById(newDish.getDishCuisine().getId());
+                if (cuisineForCheck.isPresent())
+                    dish.get().setDishCuisine(cuisineForCheck.get());
+                else
+                    throw new Exception("Didn't find such cuisine");
+            }
+            else
+                throw new Exception("Didn't find such ingredient");
+
+            dishRepository.save(dish.get());
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity deleteDish(Long id) {
+        try {
+            dishRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.service.DishTypeServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,5 +44,15 @@ public class DishTypeController {
     @GetMapping("/findByNames")
     public List<DishType> findDishTypeByNames(String names) {
         return dishTypeService.findDishTypeByNames(names);
+    }
+
+    @PutMapping("/updateCuisine/{id}")
+    public ResponseEntity updateDishType(@PathVariable Long id, @RequestBody DishType dishType) {
+        return dishTypeService.updateDishType(id, dishType);
+    }
+
+    @DeleteMapping("/deleteCuisine/{id}")
+    public ResponseEntity deleteDishType(@PathVariable Long id) {
+        return dishTypeService.deleteDishType(id);
     }
 }

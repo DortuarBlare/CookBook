@@ -2,12 +2,11 @@ package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
-import com.groupproject.nstu.cookbook.entity.DishContent;
-import com.groupproject.nstu.cookbook.entity.DishType;
-import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,5 +50,15 @@ public class DishController {
     @GetMapping("/findByNames")
     public List<Dish> findDishByNames(String names) {
         return dishService.findDishByNames(names);
+    }
+
+    @PutMapping("/updateDish/{id}")
+    public ResponseEntity updateDish(@PathVariable Long id, @RequestBody Dish dish) {
+        return dishService.updateDish(id, dish);
+    }
+
+    @DeleteMapping("/deleteDish/{id}")
+    public ResponseEntity deleteDish(@PathVariable Long id) {
+        return dishService.deleteDish(id);
     }
 }

@@ -1,9 +1,9 @@
 package com.groupproject.nstu.cookbook.controller;
 
-import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Ingredient;
 import com.groupproject.nstu.cookbook.service.IngredientServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,4 +45,13 @@ public class IngredientController {
         return ingredientService.findIngredientByNames(names);
     }
 
+    @PutMapping("/updateIngredient/{id}")
+    public ResponseEntity updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
+        return ingredientService.updateIngredient(id, ingredient);
+    }
+
+    @DeleteMapping("/deleteIngredient/{id}")
+    public ResponseEntity deleteIngredient(@PathVariable Long id) {
+        return ingredientService.deleteIngredient(id);
+    }
 }

@@ -30,6 +30,10 @@ public class DishContentController {
         return dishContentService.getAll();
     }
 
+    @GetMapping("/getAllWithListIngredient")
+    public List<Ingredient> getAllByListIngredient(){
+        return dishContentService.getAllWithIngredientList();
+    }
 
 //    @GetMapping("/findByIngredients")
 //    public List<DishContent> findDishContentByIngredients(String ingredients) {

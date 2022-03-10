@@ -2,6 +2,7 @@ package com.groupproject.nstu.cookbook.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.groupproject.nstu.cookbook.entity.converter.CustomConverter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -27,18 +28,17 @@ public class DishContent implements Serializable {
 //    @JsonBackReference
     private Dish dish;
 
-    @OneToMany(mappedBy = "dishContent", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
-//    @JsonBackReference
+    @Convert(converter = CustomConverter.class)
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    public void addIngredient(Ingredient ingredient) {
-        ingredients.add(ingredient);
-        ingredient.setDishContent(this);
-    }
-    public void removeIngredient(Ingredient ingredient) {
-        ingredients.remove(ingredient);
-        ingredient.setDishContent(null);
-    }
+//    public void addIngredient(Ingredient ingredient) {
+//        ingredients.add(ingredient);
+//        ingredient.setDishContent(this);
+//    }
+//    public void removeIngredient(Ingredient ingredient) {
+//        ingredients.remove(ingredient);
+//        ingredient.setDishContent(null);
+//    }
 
     public Long getId() {
         return id;

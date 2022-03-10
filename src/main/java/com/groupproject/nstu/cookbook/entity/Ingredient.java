@@ -24,10 +24,6 @@ public class Ingredient implements Serializable {
     @Column(name = "measure")
     private String measure;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JsonIgnore
-    private DishContent dishContent;
-
     public Ingredient() {}
 
     public Ingredient(String name, String measure) {
@@ -68,13 +64,13 @@ public class Ingredient implements Serializable {
         this.measure = measure;
     }
 
-    public DishContent getDishContent() {
-        return dishContent;
-    }
-
-    public void setDishContent(DishContent dishContent) {
-        this.dishContent = dishContent;
-    }
+//    public DishContent getDishContent() {
+//        return dishContent;
+//    }
+//
+//    public void setDishContent(DishContent dishContent) {
+//        this.dishContent = dishContent;
+//    }
 
     //    public List<DishContent> getDishContentList() {
 //        return dishContentList;

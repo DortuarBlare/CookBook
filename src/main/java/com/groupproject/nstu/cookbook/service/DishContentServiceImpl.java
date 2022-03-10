@@ -27,16 +27,17 @@ public class DishContentServiceImpl implements DishContentService {
 
     @Override
     public void createDishContent(DishContent dishContent) {
-        System.out.println(dishContent.getIngredient());
-
-        for(int i = 0; i < dishContent.getIngredient().size(); i++){
-            Ingredient ingredient = dishContent.getIngredient().get(i);
-            ingredientService.createIngredient(ingredient);
-            Long id = ingredientService.findIngredientByName(ingredient.getName()).get().getId();
-            dishContent.getIngredient().get(i).setId(id);
-        }
-
-        System.out.println(dishContent.getIngredient());
+//        System.out.println(dishContent.getIngredient());
+//
+//        for(int i = 0; i < dishContent.getIngredient().size(); i++){
+//            Ingredient ingredient = dishContent.getIngredient().get(i);
+////            ingredient.setDishContent(dishContent);
+//            ingredientService.createIngredient(ingredient);
+//            Long id = ingredientService.findIngredientByName(ingredient.getName()).get().getId();
+//            dishContent.getIngredient().get(i).setId(id);
+//        }
+//
+//        System.out.println(dishContent.getIngredient());
         dishContentRepository.save(dishContent);
 
     }
@@ -49,6 +50,11 @@ public class DishContentServiceImpl implements DishContentService {
     @Override
     public List<DishContent> getAll() {
         return dishContentRepository.findAll();
+    }
+
+    @Override
+    public List<Ingredient> getAllWithIngredientList() {
+        return dishContentRepository.getAllWithIngredientList();
     }
 
 //    @Override

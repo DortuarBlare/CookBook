@@ -2,7 +2,9 @@ package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
+import com.groupproject.nstu.cookbook.entity.DishContent;
 import com.groupproject.nstu.cookbook.entity.DishType;
+import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,11 @@ public class DishController {
     @GetMapping("/getAll")
     public List<Dish> getAllDish(){
         return dishService.getAll();
+    }
+
+    @GetMapping("/findByIngredients")
+    public List<DishResponse> findDishListByIngredients(String ingredients) {
+        return dishService.findDish(ingredients);
     }
 
     @GetMapping("/find/{id}")

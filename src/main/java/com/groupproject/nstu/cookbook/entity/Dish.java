@@ -1,8 +1,6 @@
 package com.groupproject.nstu.cookbook.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -24,8 +22,14 @@ public class Dish implements Serializable {
     @Column(name = "name", unique = true)
     private String name;
 
+    @Column(name = "dish_picture_url")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String dishPicture;
+
     @Column(name = "cooking_description")
-    @Lob @Type(type = "org.hibernate.type.TextType")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String cookingDescription;
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -43,7 +47,8 @@ public class Dish implements Serializable {
 //    @JsonBackReference
     private Cuisine dishCuisine;
 
-    public Dish() {}
+    public Dish() {
+    }
 
     public void addDishContent(DishContent dishContent) {
         dishContent.setDish(this);
@@ -92,6 +97,22 @@ public class Dish implements Serializable {
 
     public void setDishCuisine(Cuisine dishCuisine) {
         this.dishCuisine = dishCuisine;
+    }
+
+    public String getDishPicture() {
+        return dishPicture;
+    }
+
+    public void setDishPicture(String dishPicture) {
+        this.dishPicture = dishPicture;
+    }
+
+    public List<DishContent> getDishContentList() {
+        return dishContentList;
+    }
+
+    public void setDishContentList(List<DishContent> dishContentList) {
+        this.dishContentList = dishContentList;
     }
 
     @Override

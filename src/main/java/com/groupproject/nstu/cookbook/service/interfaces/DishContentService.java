@@ -1,5 +1,6 @@
 package com.groupproject.nstu.cookbook.service.interfaces;
 
+import com.groupproject.nstu.cookbook.entity.Dish;
 import com.groupproject.nstu.cookbook.entity.DishContent;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface DishContentService {
 
     List<DishContent> getAll();
 
-    List<DishContent> findDishContentByIngredients(String ingredients);
+    List<DishContent> findDishContentByDish(Dish dish);
+
 }

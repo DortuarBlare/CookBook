@@ -94,9 +94,9 @@ public class DishServiceImpl implements DishService {
 //
 //            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
 //        };
-        if (cuisines != null || !cuisines.equals("") || dishType != null || !dishType.equals("")) {
+        if (!cuisines.equals("-") || !dishType.equals("-")) {
             Specification<Dish> specification = (root, criteriaQuery, criteriaBuilder) -> {
-                if (!cuisines.equals("") && dishType != null && !dishType.equals("")) {
+                if (!cuisines.equals("-") && !dishType.equals("-")) {
                     String[] splitCuisines = cuisines.split(" ");
                     List<Predicate> orPredicates = new ArrayList<Predicate>();
 
@@ -110,7 +110,7 @@ public class DishServiceImpl implements DishService {
 
                     return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
                 }
-                else if (!cuisines.equals("") && (dishType == null || dishType.equals(""))) {
+                else if (!cuisines.equals("-") && dishType.equals("-")) {
                     String[] splitCuisines = cuisines.split(" ");
                     List<Predicate> orPredicates = new ArrayList<Predicate>();
 
@@ -120,7 +120,7 @@ public class DishServiceImpl implements DishService {
 
                     return criteriaBuilder.and(orPredicates.toArray(new Predicate[orPredicates.size()]));
                 }
-                else if (cuisines.equals("") && (dishType != null || !dishType.equals(""))) {
+                else if (cuisines.equals("-") && !dishType.equals("-")) {
                     return criteriaBuilder.equal(root.<DishType>get("dishType").<String>get("name"), dishType);
                 }
 
@@ -134,10 +134,8 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public List<DishResponse> findDish(String ingredients, String dishType, String cuisines) {
-
         List<Ingredient> ingredientList = null;
-
-        if (ingredients != null || !ingredients.equals("")) {
+        if (!ingredients.equals("-")) {
             ingredientList = ingredientService.findIngredientByNames(ingredients);
         }
 

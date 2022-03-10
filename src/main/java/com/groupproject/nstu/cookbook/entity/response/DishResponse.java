@@ -7,10 +7,10 @@ public class DishResponse {
 
     private String name;
     private String cookingDescription;
-    private List<DishResponseIngredient> dishContentList = new ArrayList<>();
     private String dishType;
     private String dishCuisine;
     private String pictureURL;
+    private List<DishResponseIngredient> dishContentList = new ArrayList<>();
 
 
     public String getName() {

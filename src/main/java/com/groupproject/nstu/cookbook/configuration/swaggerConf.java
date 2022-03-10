@@ -20,6 +20,7 @@ public class swaggerConf {
                                         new Contact()
                                                 .email("stanislav.skii2000@mail.ru")
                                                 .name("Stanislav Grokhotov")
+
                                 )
                 );
     }

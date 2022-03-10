@@ -13,5 +13,5 @@ public interface DishContentService {
 
     List<DishContent> getAll();
 
-    List<DishContent> findDishContentByIngredients(String ingredients);
+//    List<DishContent> findDishContentByIngredients(String ingredients);
 }

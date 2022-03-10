@@ -31,10 +31,10 @@ public class DishContentController {
     }
 
 
-    @GetMapping("/findByIngredients")
-    public List<DishContent> findDishContentByIngredients(String ingredients) {
-        return dishContentService.findDishContentByIngredients(ingredients);
-    }
+//    @GetMapping("/findByIngredients")
+//    public List<DishContent> findDishContentByIngredients(String ingredients) {
+//        return dishContentService.findDishContentByIngredients(ingredients);
+//    }
 
     @PostMapping("/createDishContent")
     public void createDishContent(@RequestBody DishContent dishContent){

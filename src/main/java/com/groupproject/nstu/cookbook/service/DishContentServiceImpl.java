@@ -27,7 +27,18 @@ public class DishContentServiceImpl implements DishContentService {
 
     @Override
     public void createDishContent(DishContent dishContent) {
+        System.out.println(dishContent.getIngredient());
+
+        for(int i = 0; i < dishContent.getIngredient().size(); i++){
+            Ingredient ingredient = dishContent.getIngredient().get(i);
+            ingredientService.createIngredient(ingredient);
+            Long id = ingredientService.findIngredientByName(ingredient.getName()).get().getId();
+            dishContent.getIngredient().get(i).setId(id);
+        }
+
+        System.out.println(dishContent.getIngredient());
         dishContentRepository.save(dishContent);
+
     }
 
     @Override
@@ -40,81 +51,40 @@ public class DishContentServiceImpl implements DishContentService {
         return dishContentRepository.findAll();
     }
 
-    @Override
-    public List<DishContent> findDishContentByIngredients(String ingredients) {
-
-        List<Ingredient> ingredientList = ingredientService.findIngredientByNames(ingredients);
-
-        List<Dish> dishList = dishService.getAll();
-
-        List<DishContent> resultList = new ArrayList();
-
-        for (Dish dish: dishList){
-
-            int amountOfMatchedIngredients = 0;
-
-            for (DishContent dishContent: dishContentRepository.findDishContentByDish(dish)){
-
-                for (Ingredient ingredient: ingredientList){
-
-                    if(ingredient.getId() == dishContent.getIngredient().getId()){
-                        amountOfMatchedIngredients++;
-                    }
-
-                }
-
-            }
-
-            if(amountOfMatchedIngredients==ingredientList.size()){
-                resultList.addAll(dishContentRepository.findDishContentByDish(dish));
-            }
-
-        }
-
-        return resultList;
-
-
-//        Specification<DishContent> specification = (root, criteriaQuery, criteriaBuilder) -> {
-//            String[] splitNames = ingredients.split(" ");
-//            List<Predicate> predicates = new ArrayList<Predicate>();
+//    @Override
+//    public List<DishContent> findDishContentByIngredients(String ingredients){
 //
-//            for (Ingredient ingredient : ingredientList) {
-//                predicates.add(criteriaBuilder.equal(root.<Ingredient>get("ingredient"), ingredient));
-//            }
-//            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("dish")));
-//            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
-//        };
-
-//        List<DishContent> dishContentList = dishContentRepository.findAll(specification);
-
-//        long tempDishId;
-//        int amountOfMatchedIngredients = 0;
+//        List<Ingredient> ingredientList = ingredientService.findIngredientByNames(ingredients);
 //
+//        List<Dish> dishList = dishService.getAll();
 //
-//        for(int i = 0; i < dishContentList.size(); i++){
+//        List<DishContent> resultList = new ArrayList();
 //
-//            if(dishContentList.get(i+1).getDish().getId() != null) {
-//                if (dishContentList.get(i).getDish().getId() == dishContentList.get(i+1).getDish().getId()){
+//        for (Dish dish: dishList){
 //
-//                    amountOfMatchedIngredients++;
+//            int amountOfMatchedIngredients = 0;
+//
+//            for (DishContent dishContent: dishContentRepository.findDishContentByDish(dish)){
+//
+//                for (Ingredient ingredient: ingredientList){
+//
+//                    if(ingredient.getId() == dishContent.getIngredient().getId()){
+//                        amountOfMatchedIngredients++;
+//                    }
 //
 //                }
 //
 //            }
 //
+//            if(amountOfMatchedIngredients==ingredientList.size()){
+//                resultList.addAll(dishContentRepository.findDishContentByDish(dish));
+//            }
+//
 //        }
 //
+//        return resultList;
 //
-//        for(DishContent dishContent: dishContentList){
 //
-//            tempDishId = dishContent.getDish().getId();
-//
-//            if(dishContent.getId() != dishContentList.get(0).getDish().getId())
-//                return null;
-//        }
-//
-//        return dishContentList;
-
-    }
+//    }
 
 }

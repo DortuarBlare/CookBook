@@ -6,6 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "dish_content")
@@ -25,10 +27,18 @@ public class DishContent implements Serializable {
 //    @JsonBackReference
     private Dish dish;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "ingredient_id")
+    @OneToMany(mappedBy = "dishContent", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
 //    @JsonBackReference
-    private Ingredient ingredient;
+    private List<Ingredient> ingredients = new ArrayList<>();
+
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+        ingredient.setDishContent(this);
+    }
+    public void removeIngredient(Ingredient ingredient) {
+        ingredients.remove(ingredient);
+        ingredient.setDishContent(null);
+    }
 
     public Long getId() {
         return id;
@@ -54,19 +64,26 @@ public class DishContent implements Serializable {
         this.dish = dish;
     }
 
-    public Ingredient getIngredient() {
-        return ingredient;
+    public List<Ingredient> getIngredient() {
+        return ingredients;
     }
 
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
+    public void setIngredient(List<Ingredient> ingredient) {
+        this.ingredients = ingredient;
     }
+//    public Ingredient getIngredient() {
+//        return ingredient;
+//    }
+//
+//    public void setIngredient(Ingredient ingredient) {
+//        this.ingredient = ingredient;
+//    }
 
     @Override
     public String toString() {
         return "DishContent{" +
                 "id=" + id +
-                ", ingredient=" + ingredient +
+                ", ingredient=" + ingredients +
                 '}';
     }
 }

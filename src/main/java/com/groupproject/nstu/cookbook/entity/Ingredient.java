@@ -24,10 +24,9 @@ public class Ingredient implements Serializable {
     @Column(name = "measure")
     private String measure;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnore
-    private List<DishContent> dishContentList = new ArrayList<>();
+    private DishContent dishContent;
 
     public Ingredient() {}
 
@@ -36,14 +35,14 @@ public class Ingredient implements Serializable {
         this.measure = measure;
     }
 
-    public void addDishContent(DishContent dishContent) {
-        dishContent.setIngredient(this);
-        dishContentList.add(dishContent);
-    }
-
-    public void removeDishContent(DishContent dishContent) {
-        dishContentList.remove(dishContent);
-    }
+//    public void addDishContent(DishContent dishContent) {
+//        dishContent.setIngredient(this);
+//        dishContentList.add(dishContent);
+//    }
+//
+//    public void removeDishContent(DishContent dishContent) {
+//        dishContentList.remove(dishContent);
+//    }
 
     public Long getId() {
         return id;
@@ -69,13 +68,21 @@ public class Ingredient implements Serializable {
         this.measure = measure;
     }
 
-    public List<DishContent> getDishContentList() {
-        return dishContentList;
+    public DishContent getDishContent() {
+        return dishContent;
     }
 
-    public void setDishContentList(List<DishContent> dishContentList) {
-        this.dishContentList = dishContentList;
+    public void setDishContent(DishContent dishContent) {
+        this.dishContent = dishContent;
     }
+
+    //    public List<DishContent> getDishContentList() {
+//        return dishContentList;
+//    }
+//
+//    public void setDishContentList(List<DishContent> dishContentList) {
+//        this.dishContentList = dishContentList;
+//    }
 
     @Override
     public String toString() {

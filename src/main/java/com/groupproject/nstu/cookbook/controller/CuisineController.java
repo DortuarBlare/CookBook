@@ -3,6 +3,7 @@ package com.groupproject.nstu.cookbook.controller;
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.service.CuisineServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,5 +43,15 @@ public class CuisineController {
     @GetMapping("/findByNames")
     public List<Cuisine> findCuisineByNames(String names) {
         return cuisineService.findCuisineByNames(names);
+    }
+
+    @PutMapping("/updateCuisine/{id}")
+    public ResponseEntity updateCuisine(@PathVariable Long id, @RequestBody Cuisine cuisine) {
+        return cuisineService.updateCuisine(id, cuisine);
+    }
+
+    @DeleteMapping("/deleteCuisine/{id}")
+    public ResponseEntity deleteCuisine(@PathVariable Long id) {
+        return cuisineService.deleteCuisine(id);
     }
 }

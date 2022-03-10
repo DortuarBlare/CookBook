@@ -6,12 +6,15 @@ import com.groupproject.nstu.cookbook.service.interfaces.CuisineService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,18 +34,17 @@ public class CuisineServiceImpl implements CuisineService {
     }
 
     @Override
-    public List<Cuisine> getAll(){
+    public List<Cuisine> getAll() {
         return cuisineRepository.findAll();
     }
 
     @Override
-    public Optional<Cuisine> findCuisineById(Long id){
+    public Optional<Cuisine> findCuisineById(Long id) {
         return cuisineRepository.findById(id);
     }
 
     @Override
     public Optional<Cuisine> findCuisineByName(String name) {
-
         return cuisineRepository.getCuisineByName(name);
     }
 
@@ -62,4 +64,41 @@ public class CuisineServiceImpl implements CuisineService {
         return cuisineRepository.findAll(specification);
     }
 
+    @Override
+    public ResponseEntity updateCuisine(Long id, Cuisine newCuisine) {
+        try {
+            Optional<Cuisine> cuisine = findCuisineById(id);
+            if (cuisine.isPresent())
+            {
+                Optional<Cuisine> cuisineForConstraintCheck = findCuisineByName(newCuisine.getName());
+                if (cuisineForConstraintCheck.isPresent())
+                    throw new SQLException("This cuisine already exist");
+                else
+                    cuisine.get().setName(newCuisine.getName());
+            }
+            else
+                throw new Exception("Didn't find such cuisine");
+
+            cuisineRepository.save(cuisine.get());
+            return ResponseEntity.status(HttpStatus.OK).build();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity deleteCuisine(Long id) {
+        try {
+            cuisineRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
+    }
 }

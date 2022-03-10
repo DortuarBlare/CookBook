@@ -1,13 +1,17 @@
 package com.groupproject.nstu.cookbook.service;
 
+import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
 import com.groupproject.nstu.cookbook.entity.Ingredient;
 import com.groupproject.nstu.cookbook.repository.DishTypeRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.DishTypeService;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,5 +61,41 @@ public class DishTypeServiceImpl implements DishTypeService {
         return dishTypeRepository.findAll(specification);
     }
 
+    @Override
+    public ResponseEntity updateDishType(Long id, DishType newDishType) {
+        try {
+            Optional<DishType> dishType = findDishTypeById(id);
+            if (dishType.isPresent())
+            {
+                Optional<DishType> dishTypeForConstraintCheck = findDishTypeByName(newDishType.getName());
+                if (dishTypeForConstraintCheck.isPresent())
+                    throw new SQLException("This dish type already exist");
+                else
+                    dishType.get().setName(newDishType.getName());
+            }
+            else
+                throw new Exception("Didn't find such dish type");
 
+            dishTypeRepository.save(dishType.get());
+            return ResponseEntity.status(HttpStatus.OK).build();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
+    }
+
+    @Override
+    public ResponseEntity deleteDishType(Long id) {
+        try {
+            dishTypeRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
+    }
 }

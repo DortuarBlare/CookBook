@@ -94,23 +94,42 @@ public class DishServiceImpl implements DishService {
 //
 //            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
 //        };
+        if (cuisines != null || !cuisines.equals("") || dishType != null || !dishType.equals("")) {
+            Specification<Dish> specification = (root, criteriaQuery, criteriaBuilder) -> {
+                if (!cuisines.equals("") && dishType != null && !dishType.equals("")) {
+                    String[] splitCuisines = cuisines.split(" ");
+                    List<Predicate> orPredicates = new ArrayList<Predicate>();
 
-        Specification<Dish> specification = (root, criteriaQuery, criteriaBuilder) -> {
-            String[] splitCuisines = cuisines.split(" ");
-            List<Predicate> orPredicates = new ArrayList<Predicate>();
+                    for (String splitName : splitCuisines) {
+                        orPredicates.add(criteriaBuilder.equal(root.<Cuisine>get("dishCuisine").<String>get("name"), splitName));
+                    }
+                    Predicate orPredicate = criteriaBuilder.or(orPredicates.toArray(new Predicate[orPredicates.size()]));
+                    List<Predicate> predicates = new ArrayList<Predicate>();
+                    predicates.add(orPredicate);
+                    predicates.add(criteriaBuilder.equal(root.<DishType>get("dishType").<String>get("name"), dishType));
 
-            for (String splitName : splitCuisines) {
-                orPredicates.add(criteriaBuilder.equal(root.<Cuisine>get("dishCuisine").<String>get("name"), splitName));
-            }
-            Predicate orPredicate = criteriaBuilder.or(orPredicates.toArray(new Predicate[orPredicates.size()]));
-            List<Predicate> predicates = new ArrayList<Predicate>();
-            predicates.add(orPredicate);
-            predicates.add(criteriaBuilder.equal(root.<DishType>get("dishType").<String>get("name"), dishType));
+                    return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                }
+                else if (!cuisines.equals("") && (dishType == null || dishType.equals(""))) {
+                    String[] splitCuisines = cuisines.split(" ");
+                    List<Predicate> orPredicates = new ArrayList<Predicate>();
 
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+                    for (String splitName : splitCuisines) {
+                        orPredicates.add(criteriaBuilder.equal(root.<Cuisine>get("dishCuisine").<String>get("name"), splitName));
+                    }
 
-        return dishRepository.findAll(specification);
+                    return criteriaBuilder.and(orPredicates.toArray(new Predicate[orPredicates.size()]));
+                }
+                else if (cuisines.equals("") && (dishType != null || !dishType.equals(""))) {
+                    return criteriaBuilder.equal(root.<DishType>get("dishType").<String>get("name"), dishType);
+                }
+
+                return null;
+            };
+            return dishRepository.findAll(specification);
+        }
+
+        return dishRepository.findAll();
     }
 
     @Override
@@ -118,7 +137,7 @@ public class DishServiceImpl implements DishService {
 
         List<Ingredient> ingredientList = null;
 
-        if(ingredients != null || !ingredients.equals("")){
+        if (ingredients != null || !ingredients.equals("")) {
             ingredientList = ingredientService.findIngredientByNames(ingredients);
         }
 
@@ -126,10 +145,10 @@ public class DishServiceImpl implements DishService {
 
         List<DishResponse> resultList = new ArrayList();
 
-        if(ingredientList!=null) {
 
-            for (Dish dish : dishList) {
+        for (Dish dish : dishList) {
 
+            if (ingredientList != null) {
                 int amountOfMatchedIngredients = 0;
 
                 for (DishContent dishContent : dishContentService.findDishContentByDish(dish)) {
@@ -143,6 +162,7 @@ public class DishServiceImpl implements DishService {
                     }
 
                 }
+
 
                 if (amountOfMatchedIngredients == ingredientList.size() && ingredientList.size() != 0) {
                     DishResponse dishResponse = new DishResponse();
@@ -167,9 +187,32 @@ public class DishServiceImpl implements DishService {
                     resultList.add(dishResponse);
 
                 }
-
             }
+            else {
+                DishResponse dishResponse = new DishResponse();
+                List<DishContent> dishContentList = dishContentService.findDishContentByDish(dish);
+                dishResponse.setName(dishContentList.get(0).getDish().getName());
+                dishResponse.setCookingDescription(dishContentList.get(0).getDish().getCookingDescription());
+                dishResponse.setDishType(dishContentList.get(0).getDish().getDishType().getName());
+                dishResponse.setDishCuisine(dishContentList.get(0).getDish().getDishCuisine().getName());
+                for (DishContent dishContent : dishContentList) {
+
+                    DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();
+
+                    dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
+                    dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
+
+                    dishResponse.getDishContentList().add(dishResponseIngredient);
+
+                }
+
+                dishResponse.setPictureURL(dishContentList.get(0).getDish().getDishPicture());
+
+                resultList.add(dishResponse);
+            }
+
         }
+
         return resultList;
 
     }
@@ -178,8 +221,7 @@ public class DishServiceImpl implements DishService {
     public ResponseEntity updateDish(Long id, Dish newDish) {
         try {
             Optional<Dish> dish = findDishById(id);
-            if (dish.isPresent())
-            {
+            if (dish.isPresent()) {
                 // Обновление названия блюда
                 Optional<Dish> dishForConstraintCheck = findDishByName(newDish.getName());
                 if (dishForConstraintCheck.isPresent())
@@ -203,8 +245,7 @@ public class DishServiceImpl implements DishService {
                     dish.get().setDishCuisine(cuisineForCheck.get());
                 else
                     throw new Exception("Didn't find such cuisine");
-            }
-            else
+            } else
                 throw new Exception("Didn't find such ingredient");
 
             dishRepository.save(dish.get());

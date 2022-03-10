@@ -32,9 +32,9 @@ public class DishController {
         return dishService.getAll();
     }
 
-    @GetMapping("/findByIngredients")
-    public List<DishResponse> findDishListByIngredients(String ingredients) {
-        return dishService.findDish(ingredients);
+    @GetMapping("/findByAllFilters")
+    public List<DishResponse> findDishListByAllFilters(String ingredients, String dishType, String cuisines) {
+        return dishService.findDish(ingredients, dishType, cuisines);
     }
 
     @GetMapping("/find/{id}")
@@ -50,6 +50,11 @@ public class DishController {
     @GetMapping("/findByNames")
     public List<Dish> findDishByNames(String names) {
         return dishService.findDishByNames(names);
+    }
+
+    @GetMapping("/findByCuisinesAndDishTypes")
+    public List<Dish> findDishByCuisinesAndDishTypes(String cuisines, String dishType) {
+        return dishService.findDishByCuisinesAndDishType(cuisines, dishType);
     }
 
     @PutMapping("/updateDish/{id}")

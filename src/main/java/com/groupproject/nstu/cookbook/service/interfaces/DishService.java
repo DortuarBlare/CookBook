@@ -20,10 +20,12 @@ public interface DishService {
 
     List<Dish> findDishByNames(String names);
 
+    List<Dish> findDishByCuisinesAndDishType(String cuisines, String dishType);
+
     ResponseEntity updateDish(Long id, Dish newDish);
 
     ResponseEntity deleteDish(Long id);
 
-    List<DishResponse> findDish(String ingredients);
+    List<DishResponse> findDish(String ingredients, String dishType, String cuisines);
 
 }

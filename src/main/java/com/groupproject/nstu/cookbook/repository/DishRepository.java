@@ -16,4 +16,6 @@ public interface DishRepository extends JpaRepository<Dish, Long>, JpaSpecificat
     @Query("select d from Dish d where d.name = :name")
     Optional<Dish> getDishByName(@Param("name") String name);
 
+
+
 }

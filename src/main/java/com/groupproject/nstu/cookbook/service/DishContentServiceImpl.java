@@ -84,6 +84,7 @@ public class DishContentServiceImpl implements DishContentService {
     @Override
     public ResponseEntity deleteDishContent(Long id) {
         try {
+
             dishContentRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {

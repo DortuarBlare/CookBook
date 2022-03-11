@@ -147,7 +147,7 @@ public class DishServiceImpl implements DishService {
                         orPredicates.add(criteriaBuilder.equal(root.<Cuisine>get("dishCuisine").<String>get("name"), splitName));
                     }
 
-                    return criteriaBuilder.and(orPredicates.toArray(new Predicate[orPredicates.size()]));
+                    return criteriaBuilder.or(orPredicates.toArray(new Predicate[orPredicates.size()]));
                 }
                 else if (cuisines.equals("-") && !dishType.equals("-")) {
                     return criteriaBuilder.equal(root.<DishType>get("dishType").<String>get("name"), dishType);

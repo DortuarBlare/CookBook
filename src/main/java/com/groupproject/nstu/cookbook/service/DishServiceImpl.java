@@ -25,14 +25,14 @@ public class DishServiceImpl implements DishService {
 
     private final DishRepository dishRepository;
     private final IngredientServiceImpl ingredientService;
-    private final DishContentServiceImpl dishContentService;
+    //private final DishContentServiceImpl dishContentService;
     private final DishTypeServiceImpl dishTypeService;
     private final CuisineServiceImpl cuisineService;
 
-    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService, DishContentServiceImpl dishContentService) {
+    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService/*, DishContentServiceImpl dishContentService*/) {
         this.dishRepository = dishRepository;
         this.ingredientService = ingredientService;
-        this.dishContentService = dishContentService;
+        //this.dishContentService = dishContentService;
         this.dishTypeService = dishTypeService;
         this.cuisineService = cuisineService;
     }
@@ -133,81 +133,59 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<DishResponse> findDish(String ingredients, String dishType, String cuisines) {
+    public List<DishResponse> findDishByAllFilters(String ingredients, String dishType, String cuisines) {
         List<Ingredient> ingredientList = null;
-        if (!ingredients.equals("-")) {
+        boolean isDishEligible = true;
+
+        if (!ingredients.equals("-"))
             ingredientList = ingredientService.findIngredientByNames(ingredients);
-        }
 
         List<Dish> dishList = this.findDishByCuisinesAndDishType(cuisines, dishType);
 
         List<DishResponse> resultList = new ArrayList();
-
 
         for (Dish dish : dishList) {
 
             if (ingredientList != null) {
                 int amountOfMatchedIngredients = 0;
 
-                for (DishContent dishContent : dishContentService.findDishContentByDish(dish)) {
+                for (DishContent dishContent : dish.getDishContentList()/*dishContentService.findDishContentByDish(dish)*/) {
 
                     for (Ingredient ingredient : ingredientList) {
 
-                        if (ingredient.getId() == dishContent.getIngredient().getId()) {
+                        if (ingredient.getId() == dishContent.getIngredient().getId())
                             amountOfMatchedIngredients++;
-                        }
 
                     }
 
                 }
+                isDishEligible = amountOfMatchedIngredients == ingredientList.size() && ingredientList.size() != 0;
+            }
 
-
-                if (amountOfMatchedIngredients == ingredientList.size() && ingredientList.size() != 0) {
+                if (isDishEligible) {
                     DishResponse dishResponse = new DishResponse();
-                    List<DishContent> dishContentList = dishContentService.findDishContentByDish(dish);
-                    dishResponse.setName(dishContentList.get(0).getDish().getName());
-                    dishResponse.setCookingDescription(dishContentList.get(0).getDish().getCookingDescription());
-                    dishResponse.setDishType(dishContentList.get(0).getDish().getDishType().getName());
-                    dishResponse.setDishCuisine(dishContentList.get(0).getDish().getDishCuisine().getName());
-                    for (DishContent dishContent : dishContentList) {
+                    List<DishContent> dishContentList = dish.getDishContentList()/*dishContentService.findDishContentByDish(dish)*/;
+                    DishContent tempDishContent = dishContentList.get(0);
 
+                    dishResponse.setName(tempDishContent.getDish().getName());
+                    dishResponse.setCookingDescription(tempDishContent.getDish().getCookingDescription());
+                    dishResponse.setDishType(tempDishContent.getDish().getDishType().getName());
+                    dishResponse.setDishCuisine(tempDishContent.getDish().getDishCuisine().getName());
+                    dishResponse.setPictureURL(tempDishContent.getDish().getDishPicture());
+
+                    for (DishContent dishContent : dishContentList) {
                         DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();
 
                         dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
                         dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
+                        dishResponseIngredient.setMeasure(dishContent.getIngredient().getMeasure());
 
                         dishResponse.getDishContentList().add(dishResponseIngredient);
 
                     }
 
-                    dishResponse.setPictureURL(dishContentList.get(0).getDish().getDishPicture());
-
                     resultList.add(dishResponse);
-
                 }
-            }
-            else {
-                DishResponse dishResponse = new DishResponse();
-                List<DishContent> dishContentList = dishContentService.findDishContentByDish(dish);
-                dishResponse.setName(dishContentList.get(0).getDish().getName());
-                dishResponse.setCookingDescription(dishContentList.get(0).getDish().getCookingDescription());
-                dishResponse.setDishType(dishContentList.get(0).getDish().getDishType().getName());
-                dishResponse.setDishCuisine(dishContentList.get(0).getDish().getDishCuisine().getName());
-                for (DishContent dishContent : dishContentList) {
-
-                    DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();
-
-                    dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
-                    dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
-
-                    dishResponse.getDishContentList().add(dishResponseIngredient);
-
-                }
-
-                dishResponse.setPictureURL(dishContentList.get(0).getDish().getDishPicture());
-
-                resultList.add(dishResponse);
-            }
 
         }
 
@@ -218,35 +196,37 @@ public class DishServiceImpl implements DishService {
     @Override
     public ResponseEntity updateDish(Long id, Dish newDish) {
         try {
-            Optional<Dish> dish = findDishById(id);
-            if (dish.isPresent()) {
+            Optional<Dish> dishForUpdate = findDishById(id);
+            if (dishForUpdate.isPresent()) {
                 // Обновление названия блюда
-                Optional<Dish> dishForConstraintCheck = findDishByName(newDish.getName());
-                if (dishForConstraintCheck.isPresent())
-                    throw new SQLException("This dish already exist");
-                else
-                    dish.get().setName(newDish.getName());
+                if (!dishForUpdate.get().getName().equals(newDish.getName())) {
+                    Optional<Dish> dishForConstraintCheck = findDishByName(newDish.getName());
+                    if (dishForConstraintCheck.isPresent())
+                        throw new SQLException("This dish already exist");
+                    else
+                        dishForUpdate.get().setName(newDish.getName());
+                }
 
                 // Обновление описания приготовления
-                dish.get().setCookingDescription(newDish.getCookingDescription());
+                dishForUpdate.get().setCookingDescription(newDish.getCookingDescription());
 
                 // Обновление типа блюда
                 Optional<DishType> dishTypeForCheck = dishTypeService.findDishTypeById(newDish.getDishType().getId());
                 if (dishTypeForCheck.isPresent())
-                    dish.get().setDishType(dishTypeForCheck.get());
+                    dishForUpdate.get().setDishType(dishTypeForCheck.get());
                 else
                     throw new Exception("Didn't find such dish type");
 
                 // Обновление кухни блюда
                 Optional<Cuisine> cuisineForCheck = cuisineService.findCuisineById(newDish.getDishCuisine().getId());
                 if (cuisineForCheck.isPresent())
-                    dish.get().setDishCuisine(cuisineForCheck.get());
+                    dishForUpdate.get().setDishCuisine(cuisineForCheck.get());
                 else
                     throw new Exception("Didn't find such cuisine");
             } else
-                throw new Exception("Didn't find such ingredient");
+                throw new Exception("Didn't find such dish");
 
-            dishRepository.save(dish.get());
+            dishRepository.save(dishForUpdate.get());
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (SQLException e) {
             e.printStackTrace();

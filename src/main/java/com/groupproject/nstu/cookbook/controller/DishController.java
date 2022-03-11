@@ -1,6 +1,5 @@
 package com.groupproject.nstu.cookbook.controller;
 
-import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,7 +33,7 @@ public class DishController {
 
     @GetMapping("/findByAllFilters")
     public List<DishResponse> findDishListByAllFilters(String ingredients, String dishType, String cuisines) {
-        return dishService.findDish(ingredients, dishType, cuisines);
+        return dishService.findDishByAllFilters(ingredients, dishType, cuisines);
     }
 
     @GetMapping("/find/{id}")

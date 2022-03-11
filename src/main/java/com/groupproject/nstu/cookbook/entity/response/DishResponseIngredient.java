@@ -2,8 +2,17 @@ package com.groupproject.nstu.cookbook.entity.response;
 
 public class DishResponseIngredient {
 
-    private float amountOfIngredient;
     private String ingredientName;
+    private float amountOfIngredient;
+    private String measure;
+
+    public String getIngredientName() {
+        return ingredientName;
+    }
+
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
+    }
 
     public float getAmountOfIngredient() {
         return amountOfIngredient;
@@ -13,11 +22,11 @@ public class DishResponseIngredient {
         this.amountOfIngredient = amountOfIngredient;
     }
 
-    public String getIngredientName() {
-        return ingredientName;
+    public String getMeasure() {
+        return measure;
     }
 
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 }

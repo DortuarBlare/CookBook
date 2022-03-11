@@ -15,7 +15,4 @@ public interface DishTypeRepository extends JpaRepository<DishType, Long>, JpaSp
     @Query("select dt from DishType dt where dt.name = lower(:name)")
     Optional<DishType> getDishTypeByName(@Param("name") String name);
 
-
-
-
 }

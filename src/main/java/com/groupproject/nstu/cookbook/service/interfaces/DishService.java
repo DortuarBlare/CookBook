@@ -26,6 +26,6 @@ public interface DishService {
 
     ResponseEntity deleteDish(Long id);
 
-    List<DishResponse> findDish(String ingredients, String dishType, String cuisines);
+    List<DishResponse> findDishByAllFilters(String ingredients, String dishType, String cuisines);
 
 }

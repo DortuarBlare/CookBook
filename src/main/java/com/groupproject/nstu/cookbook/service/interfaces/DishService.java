@@ -1,7 +1,6 @@
 package com.groupproject.nstu.cookbook.service.interfaces;
 
 import com.groupproject.nstu.cookbook.entity.Dish;
-import com.groupproject.nstu.cookbook.entity.DishContent;
 import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +14,8 @@ public interface DishService {
     void createDish(Dish dish);
 
     List<Dish> getAll();
+
+    Optional<DishResponse> findDishResponseByName(String name);
 
     Optional<Dish> findDishByName(String name);
 

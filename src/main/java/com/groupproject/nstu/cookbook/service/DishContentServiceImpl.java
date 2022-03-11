@@ -2,6 +2,7 @@ package com.groupproject.nstu.cookbook.service;
 
 import com.groupproject.nstu.cookbook.entity.*;
 import com.groupproject.nstu.cookbook.repository.DishContentRepository;
+import com.groupproject.nstu.cookbook.repository.DishRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.DishContentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,13 @@ import java.util.Optional;
 public class DishContentServiceImpl implements DishContentService {
 
     private final DishContentRepository dishContentRepository;
-    private final DishServiceImpl dishService;
+    private final DishRepository dishRepository;
     private final IngredientServiceImpl ingredientService;
 
-    public DishContentServiceImpl(DishContentRepository dishContentRepository, DishServiceImpl dishService, IngredientServiceImpl ingredientService) {
+    public DishContentServiceImpl(DishContentRepository dishContentRepository, DishRepository dishRepository, IngredientServiceImpl ingredientService) {
         this.dishContentRepository = dishContentRepository;
-        this.dishService = dishService;
+        this.dishRepository = dishRepository;
+//        this.dishService = dishService;
         this.ingredientService = ingredientService;
     }
 
@@ -53,7 +55,7 @@ public class DishContentServiceImpl implements DishContentService {
                 dishContentForUpdate.get().setAmountOfIngredient(newDishContent.getAmountOfIngredient());
 
                 // Обновление блюда
-                Optional<Dish> dishForCheck = dishService.findDishById(newDishContent.getDish().getId());
+                Optional<Dish> dishForCheck = dishRepository.findById(newDishContent.getDish().getId());
                 if (dishForCheck.isPresent())
                     dishContentForUpdate.get().setDish(dishForCheck.get());
                 else

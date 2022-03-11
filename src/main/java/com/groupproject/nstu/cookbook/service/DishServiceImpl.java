@@ -25,16 +25,16 @@ public class DishServiceImpl implements DishService {
 
     private final DishRepository dishRepository;
     private final IngredientServiceImpl ingredientService;
-    //private final DishContentServiceImpl dishContentService;
+    private final DishContentServiceImpl dishContentService;
     private final DishTypeServiceImpl dishTypeService;
     private final CuisineServiceImpl cuisineService;
 
-    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService/*, DishContentServiceImpl dishContentService*/) {
+    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService,/*, DishContentServiceImpl dishContentService*/DishContentServiceImpl dishContentService) {
         this.dishRepository = dishRepository;
         this.ingredientService = ingredientService;
-        //this.dishContentService = dishContentService;
         this.dishTypeService = dishTypeService;
         this.cuisineService = cuisineService;
+        this.dishContentService = dishContentService;
     }
 
     @Override
@@ -44,7 +44,12 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public void createDish(Dish dish) {
+
+//        String dishName = dish.getName().toLowerCase(Locale.ROOT);
+//        dish.setName(dishName);
+
         dishRepository.save(dish);
+
     }
 
     @Override
@@ -52,9 +57,52 @@ public class DishServiceImpl implements DishService {
         return dishRepository.findAll();
     }
 
+
     @Override
     public Optional<Dish> findDishByName(String name) {
+
         return dishRepository.getDishByName(name);
+
+    }
+
+
+    @Override
+    public Optional<DishResponse> findDishResponseByName(String name) {
+
+        DishResponse dishResponse = new DishResponse();
+        List<Dish> dishList = dishRepository.findAll();
+
+        Dish dish = null;
+        for(Dish dish1: dishList){
+            if(dish1.getName().equals(name)){
+                dish=dish1;
+                break;
+            }
+        }
+
+        List<DishContent> dishContentList = dishContentService.findDishContentByDish(dish);
+
+        Dish findDish = dishContentList.get(0).getDish();
+        dishResponse.setName(findDish.getName());
+        dishResponse.setCookingDescription(findDish.getCookingDescription());
+        dishResponse.setDishType(findDish.getDishType().getName());
+        dishResponse.setDishCuisine(findDish.getDishCuisine().getName());
+
+        for (DishContent dishContent: dishContentList){
+
+            DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();
+
+            dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
+            dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
+
+            dishResponse.getDishContentList().add(dishResponseIngredient);
+
+        }
+
+        dishResponse.setPictureURL(dishContentList.get(0).getDish().getDishPicture());
+
+        return Optional.of(dishResponse);
+
     }
 
     @Override
@@ -75,25 +123,6 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public List<Dish> findDishByCuisinesAndDishType(String cuisines, String dishType) {
-//        Specification<Dish> specification = (root, criteriaQuery, criteriaBuilder) -> {
-//            String[] splitCuisines = cuisines.split(" ");
-//            List<Predicate> predicates = new ArrayList<Predicate>();
-//
-//            List<Predicate> andPredicates = new ArrayList<Predicate>();
-//            Predicate andPredicate;
-//            for (String splitName : splitCuisines) {
-//
-//                andPredicates.add(criteriaBuilder.equal(root.<Cuisine>get("dishCuisine").<String>get("name"), splitName));
-//                andPredicates.add(criteriaBuilder.equal(root.<DishType>get("dishType").<String>get("name"), dishType));
-//                andPredicate = criteriaBuilder.and(andPredicates.toArray(new Predicate[andPredicates.size()]));
-//                predicates.add(andPredicate);
-//
-//                andPredicates.clear();
-//                andPredicate = null;
-//            }
-//
-//            return criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
-//        };
         if (!cuisines.equals("-") || !dishType.equals("-")) {
             Specification<Dish> specification = (root, criteriaQuery, criteriaBuilder) -> {
                 if (!cuisines.equals("-") && !dishType.equals("-")) {

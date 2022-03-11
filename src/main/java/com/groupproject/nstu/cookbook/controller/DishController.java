@@ -21,6 +21,20 @@ public class DishController {
         this.dishService = dishService;
     }
 
+    @GetMapping("/")
+    public String hello() {
+        return "This page is your DRUG! aahhahahaha";
+    }
+
+    @GetMapping("/user")
+    public String user() {
+        return "User";
+    }
+    @GetMapping("/admin")
+    public String admin() {
+        return "Admin";
+    }
+
     @PostMapping("/createDish")
     public void createDish(@RequestBody Dish dish){
         dishService.createDish(dish);
@@ -42,8 +56,8 @@ public class DishController {
     }
 
     @GetMapping("/findByName/{name}")
-    public Optional<Dish> findDishByName(@PathVariable String name) {
-        return dishService.findDishByName(name);
+    public Optional<DishResponse> findDishResponseByName(@PathVariable String name) {
+        return dishService.findDishResponseByName(name);
     }
 
     @GetMapping("/findByNames")

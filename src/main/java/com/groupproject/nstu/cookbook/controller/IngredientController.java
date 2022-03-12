@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "Ingredients")
-@RequestMapping("/ingredients/")
+@Tag(name = "Ingredient")
+@RequestMapping("/ingredient/")
 public class IngredientController {
 
     private final IngredientServiceImpl ingredientService;

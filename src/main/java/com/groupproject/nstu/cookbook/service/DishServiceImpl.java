@@ -43,13 +43,19 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public void createDish(Dish dish) {
+    public ResponseEntity createDish(Dish dish) {
 
-//        String dishName = dish.getName().toLowerCase(Locale.ROOT);
-//        dish.setName(dishName);
-
-        dishRepository.save(dish);
-
+        try {
+            if (findDishByName(dish.getName()).isEmpty()) {
+                dishRepository.save(dish);
+            } else
+                throw new SQLException("This dish already exist");
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        }
     }
 
     @Override

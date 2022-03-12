@@ -4,6 +4,7 @@ import com.groupproject.nstu.cookbook.entity.Dish;
 import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ public interface DishService {
 
     Optional<Dish> findDishById(Long id);
 
-    void createDish(Dish dish);
+    ResponseEntity createDish(Dish dish);
 
     List<Dish> getAll();
 

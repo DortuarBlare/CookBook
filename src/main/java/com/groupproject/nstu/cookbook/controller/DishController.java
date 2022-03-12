@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,8 @@ public class DishController {
     }
 
     @PostMapping("/createDish")
-    public void createDish(@RequestBody Dish dish){
-        dishService.createDish(dish);
+    public ResponseEntity createDish(@RequestBody Dish dish){
+        return dishService.createDish(dish);
     }
 
     @GetMapping("/getAll")

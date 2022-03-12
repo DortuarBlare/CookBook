@@ -39,9 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/dish/admin").hasRole( "ADMIN")
-                .antMatchers("/dish/user").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/dish/").permitAll()
+                .antMatchers("/dish/**").hasRole( "ADMIN")
+                .antMatchers("/cuisine/**").hasRole( "ADMIN")
+                .antMatchers("/ingredient/**").hasRole( "ADMIN")
+                .antMatchers("/dishType/**").hasRole( "ADMIN")
+                .antMatchers("/dishContent/**").hasRole( "ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                //.antMatchers("/**").permitAll()
                 .and().formLogin();
     }
 

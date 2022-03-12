@@ -22,7 +22,7 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-public class swaggerConf {
+public class SwaggerConf {
 
     @Bean
     public Docket api() {
@@ -62,6 +62,12 @@ public class swaggerConf {
                                         new Contact()
                                                 .email("stanislav.skii2000@mail.ru")
                                                 .name("Stanislav Grokhotov")
+
+                                )
+                                .contact(
+                                        new Contact()
+                                                .email("YaroslavtsevNik2000@gmail.com")
+                                                .name("Yaroslavtsev Nikita")
 
                                 )
                 );

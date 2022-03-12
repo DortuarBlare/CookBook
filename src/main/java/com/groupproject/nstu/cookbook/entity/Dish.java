@@ -47,8 +47,7 @@ public class Dish implements Serializable {
 //    @JsonBackReference
     private Cuisine dishCuisine;
 
-    public Dish() {
-    }
+    public Dish() {}
 
     public void addDishContent(DishContent dishContent) {
         dishContent.setDish(this);

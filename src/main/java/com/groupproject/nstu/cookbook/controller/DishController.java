@@ -46,12 +46,12 @@ public class DishController {
         return dishService.getAll();
     }
 
-    @GetMapping("/findByAllFilters")
+    @GetMapping("/findByAllFilters/{ingredients}/{dishType}/{cuisines}")
     public List<DishResponse> findDishListByAllFilters(String ingredients, String dishType, String cuisines) {
         return dishService.findDishByAllFilters(ingredients, dishType, cuisines);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/findById/{id}")
     public Optional<Dish> findDishById(@PathVariable Long id){
         return dishService.findDishById(id);
     }
@@ -61,22 +61,22 @@ public class DishController {
         return dishService.findDishResponseByName(name);
     }
 
-    @GetMapping("/findByNames")
+    @GetMapping("/findByNames/{names}")
     public List<Dish> findDishByNames(String names) {
         return dishService.findDishByNames(names);
     }
 
-    @GetMapping("/findByCuisinesAndDishTypes")
-    public List<Dish> findDishByCuisinesAndDishTypes(String cuisines, String dishType) {
+    @GetMapping("/findByCuisinesAndDishType/{cuisines}/{dishType}")
+    public List<Dish> findDishByCuisinesAndDishType(String cuisines, String dishType) {
         return dishService.findDishByCuisinesAndDishType(cuisines, dishType);
     }
 
-    @PutMapping("/updateDish/{id}")
+    @PutMapping("/updateById/{id}")
     public ResponseEntity updateDish(@PathVariable Long id, @RequestBody Dish dish) {
         return dishService.updateDish(id, dish);
     }
 
-    @DeleteMapping("/deleteDish/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public ResponseEntity deleteDish(@PathVariable Long id) {
         return dishService.deleteDish(id);
     }

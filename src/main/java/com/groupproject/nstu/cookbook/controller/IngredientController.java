@@ -25,7 +25,7 @@ public class IngredientController {
         ingredientService.createIngredient(ingredient);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/findById/{id}")
     public Optional<Ingredient> findIngredientById(@PathVariable Long id){
         return ingredientService.findIngredientById(id);
     }
@@ -40,17 +40,17 @@ public class IngredientController {
         return ingredientService.findIngredientByName(name);
     }
 
-    @GetMapping("/findByNames")
+    @GetMapping("/findByNames/{names}")
     public List<Ingredient> findIngredientByNames(String names) {
         return ingredientService.findIngredientByNames(names);
     }
 
-    @PutMapping("/updateIngredient/{id}")
+    @PutMapping("/updateById/{id}")
     public ResponseEntity updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
         return ingredientService.updateIngredient(id, ingredient);
     }
 
-    @DeleteMapping("/deleteIngredient/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public ResponseEntity deleteIngredient(@PathVariable Long id) {
         return ingredientService.deleteIngredient(id);
     }

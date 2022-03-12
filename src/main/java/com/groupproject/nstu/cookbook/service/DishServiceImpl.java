@@ -184,7 +184,7 @@ public class DishServiceImpl implements DishService {
             if (ingredientList != null) {
                 int amountOfMatchedIngredients = 0;
 
-                for (DishContent dishContent : dish.getDishContentList()/*dishContentService.findDishContentByDish(dish)*/) {
+                for (DishContent dishContent : dish.getDishContentList()) {
 
                     for (Ingredient ingredient : ingredientList) {
 
@@ -199,7 +199,7 @@ public class DishServiceImpl implements DishService {
 
                 if (isDishEligible) {
                     DishResponse dishResponse = new DishResponse();
-                    List<DishContent> dishContentList = dish.getDishContentList()/*dishContentService.findDishContentByDish(dish)*/;
+                    List<DishContent> dishContentList = dish.getDishContentList();
                     DishContent tempDishContent = dishContentList.get(0);
 
                     dishResponse.setName(tempDishContent.getDish().getName());

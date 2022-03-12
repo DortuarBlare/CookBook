@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class swaggerConf {
+public class SwaggerConf {
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -20,6 +20,12 @@ public class swaggerConf {
                                         new Contact()
                                                 .email("stanislav.skii2000@mail.ru")
                                                 .name("Stanislav Grokhotov")
+
+                                )
+                                .contact(
+                                        new Contact()
+                                                .email("YaroslavtsevNik2000@gmail.com")
+                                                .name("Yaroslavtsev Nikita")
 
                                 )
                 );

@@ -31,7 +31,7 @@ public class DishTypeController {
         return dishTypeService.getAll();
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/findById/{id}")
     public Optional<DishType> findDishTypeById(@PathVariable Long id) {
         return dishTypeService.findDishTypeById(id);
     }
@@ -41,17 +41,17 @@ public class DishTypeController {
         return dishTypeService.findDishTypeByName(name);
     }
 
-    @GetMapping("/findByNames")
+    @GetMapping("/findByNames/{names}")
     public List<DishType> findDishTypeByNames(String names) {
         return dishTypeService.findDishTypeByNames(names);
     }
 
-    @PutMapping("/updateCuisine/{id}")
+    @PutMapping("/updateById/{id}")
     public ResponseEntity updateDishType(@PathVariable Long id, @RequestBody DishType dishType) {
         return dishTypeService.updateDishType(id, dishType);
     }
 
-    @DeleteMapping("/deleteCuisine/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public ResponseEntity deleteDishType(@PathVariable Long id) {
         return dishTypeService.deleteDishType(id);
     }

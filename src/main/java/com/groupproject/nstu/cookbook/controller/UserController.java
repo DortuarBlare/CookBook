@@ -1,44 +1,25 @@
 package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Dish;
+import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.groupproject.nstu.cookbook.entity.response.DishResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@Tag(name = "Dish")
-@RequestMapping("/dish/")
-public class DishController {
-
+@RestController(value = "/user")
+@Tag(name = "User")
+@RequestMapping("/user/dish/")
+public class UserController {
     private final DishServiceImpl dishService;
 
-    public DishController(DishServiceImpl dishService) {
+    public UserController(DishServiceImpl dishService) {
         this.dishService = dishService;
-    }
-
-    @GetMapping("/")
-    public String hello() {
-        return "This page is your DRUG! aahhahahaha";
-    }
-
-    @GetMapping("/user")
-    public String user() {
-        return "User";
-    }
-    @GetMapping("/admin")
-    public String admin() {
-        return "Admin";
-    }
-
-    @PostMapping("/createDish")
-    public ResponseEntity createDish(@RequestBody Dish dish){
-        return dishService.createDish(dish);
     }
 
     @GetMapping("/getAll")
@@ -69,15 +50,5 @@ public class DishController {
     @GetMapping("/findByCuisinesAndDishType/{cuisines}/{dishType}")
     public List<Dish> findDishByCuisinesAndDishType(String cuisines, String dishType) {
         return dishService.findDishByCuisinesAndDishType(cuisines, dishType);
-    }
-
-    @PutMapping("/updateById/{id}")
-    public ResponseEntity updateDish(@PathVariable Long id, @RequestBody Dish dish) {
-        return dishService.updateDish(id, dish);
-    }
-
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity deleteDish(@PathVariable Long id) {
-        return dishService.deleteDish(id);
     }
 }

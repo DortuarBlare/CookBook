@@ -184,7 +184,7 @@ public class DishServiceImpl implements DishService {
             if (ingredientList != null) {
                 int amountOfMatchedIngredients = 0;
 
-                for (DishContent dishContent : dish.getDishContentList()/*dishContentService.findDishContentByDish(dish)*/) {
+                for (DishContent dishContent : dish.getDishContentList()) {
 
                     for (Ingredient ingredient : ingredientList) {
 
@@ -198,28 +198,30 @@ public class DishServiceImpl implements DishService {
             }
 
                 if (isDishEligible) {
-                    DishResponse dishResponse = new DishResponse();
-                    List<DishContent> dishContentList = dish.getDishContentList()/*dishContentService.findDishContentByDish(dish)*/;
-                    DishContent tempDishContent = dishContentList.get(0);
+                    List<DishContent> dishContentList = dish.getDishContentList();
+                    if (!dishContentList.isEmpty()) {
+                        DishResponse dishResponse = new DishResponse();
+                        DishContent tempDishContent = dishContentList.get(0);
 
-                    dishResponse.setName(tempDishContent.getDish().getName());
-                    dishResponse.setCookingDescription(tempDishContent.getDish().getCookingDescription());
-                    dishResponse.setDishType(tempDishContent.getDish().getDishType().getName());
-                    dishResponse.setDishCuisine(tempDishContent.getDish().getDishCuisine().getName());
-                    dishResponse.setPictureURL(tempDishContent.getDish().getDishPicture());
+                        dishResponse.setName(tempDishContent.getDish().getName());
+                        dishResponse.setCookingDescription(tempDishContent.getDish().getCookingDescription());
+                        dishResponse.setDishType(tempDishContent.getDish().getDishType().getName());
+                        dishResponse.setDishCuisine(tempDishContent.getDish().getDishCuisine().getName());
+                        dishResponse.setPictureURL(tempDishContent.getDish().getDishPicture());
 
-                    for (DishContent dishContent : dishContentList) {
-                        DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();
+                        for (DishContent dishContent : dishContentList) {
+                            DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();
 
-                        dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
-                        dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
-                        dishResponseIngredient.setMeasure(dishContent.getIngredient().getMeasure());
+                            dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
+                            dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
+                            dishResponseIngredient.setMeasure(dishContent.getIngredient().getMeasure());
 
-                        dishResponse.getDishContentList().add(dishResponseIngredient);
+                            dishResponse.getDishContentList().add(dishResponseIngredient);
 
+                        }
+
+                        resultList.add(dishResponse);
                     }
-
-                    resultList.add(dishResponse);
                 }
 
         }

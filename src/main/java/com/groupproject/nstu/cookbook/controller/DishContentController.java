@@ -21,7 +21,7 @@ public class DishContentController {
         this.dishContentService = dishContentService;
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/findById/{id}")
     public Optional<DishContent> findDishContentById(@PathVariable Long id){
         return dishContentService.findDishContentById(id);
     }
@@ -36,12 +36,12 @@ public class DishContentController {
         dishContentService.createDishContent(dishContent);
     }
 
-    @PutMapping("/updateDishContent/{id}")
+    @PutMapping("/updateById/{id}")
     public ResponseEntity updateDish(@PathVariable Long id, @RequestBody DishContent dishContent) {
         return dishContentService.updateDishContent(id, dishContent);
     }
 
-    @DeleteMapping("/deleteDishContent/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public ResponseEntity deleteDish(@PathVariable Long id) {
         return dishContentService.deleteDishContent(id);
     }

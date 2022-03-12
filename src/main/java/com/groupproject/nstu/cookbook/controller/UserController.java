@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController(value = "/user")
 @Tag(name = "User")
 @RequestMapping("/user/dish/")
 public class UserController {

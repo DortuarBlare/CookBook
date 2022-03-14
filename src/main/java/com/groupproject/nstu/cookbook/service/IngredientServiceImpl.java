@@ -2,6 +2,7 @@ package com.groupproject.nstu.cookbook.service;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Ingredient;
+import com.groupproject.nstu.cookbook.entity.request.IngredientRequest;
 import com.groupproject.nstu.cookbook.repository.IngredientRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.IngredientService;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,7 +33,11 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void createIngredient(Ingredient ingredient) {
+    public void createIngredient(IngredientRequest ingredientRequest) {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName(ingredientRequest.getName());
+        ingredient.setMeasure(ingredientRequest.getMeasure());
+
         ingredientRepository.save(ingredient);
     }
 
@@ -65,16 +70,18 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public ResponseEntity updateIngredient(Long id, Ingredient newIngredient) {
+    public ResponseEntity updateIngredient(Long id, IngredientRequest ingredientRequest) {
         try {
             Optional<Ingredient> ingredient = findIngredientById(id);
             if (ingredient.isPresent())
             {
-                Optional<Ingredient> ingredientForConstraintCheck = findIngredientByName(newIngredient.getName());
+                Optional<Ingredient> ingredientForConstraintCheck = findIngredientByName(ingredientRequest.getName());
                 if (ingredientForConstraintCheck.isPresent())
                     throw new SQLException("This ingredient already exist");
                 else
-                    ingredient.get().setName(newIngredient.getName());
+                    ingredient.get().setName(ingredientRequest.getName());
+
+                ingredient.get().setMeasure(ingredientRequest.getMeasure());
             }
             else
                 throw new Exception("Didn't find such ingredient");

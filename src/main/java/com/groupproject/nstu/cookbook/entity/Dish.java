@@ -49,6 +49,14 @@ public class Dish implements Serializable {
 
     public Dish() {}
 
+    public Dish(String name, String dishPicture, String cookingDescription, DishType dishType, Cuisine dishCuisine) {
+        this.name = name;
+        this.dishPicture = dishPicture;
+        this.cookingDescription = cookingDescription;
+        this.dishType = dishType;
+        this.dishCuisine = dishCuisine;
+    }
+
     public void addDishContent(DishContent dishContent) {
         dishContent.setDish(this);
         dishContentList.add(dishContent);

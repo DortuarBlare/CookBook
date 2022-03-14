@@ -2,6 +2,7 @@ package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
+import com.groupproject.nstu.cookbook.entity.request.CuisineRequest;
 import com.groupproject.nstu.cookbook.service.CuisineServiceImpl;
 import com.groupproject.nstu.cookbook.service.DishContentServiceImpl;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
@@ -24,8 +25,8 @@ public class CuisineController {
     }
 
     @PostMapping("/createCuisine")
-    public void createCuisine(@RequestBody Cuisine cuisine) {
-        cuisineService.createCuisine(cuisine);
+    public void createCuisine(@RequestBody CuisineRequest cuisineRequest) {
+        cuisineService.createCuisine(cuisineRequest);
     }
 
     @GetMapping("/getAll")
@@ -49,8 +50,8 @@ public class CuisineController {
     }
 
     @PutMapping("/updateById/{id}")
-    public ResponseEntity updateCuisine(@PathVariable Long id, @RequestBody Cuisine cuisine) {
-        return cuisineService.updateCuisine(id, cuisine);
+    public ResponseEntity updateCuisine(@PathVariable Long id, @RequestBody CuisineRequest cuisineRequest) {
+        return cuisineService.updateCuisine(id, cuisineRequest);
     }
 
     @DeleteMapping("/deleteById/{id}")

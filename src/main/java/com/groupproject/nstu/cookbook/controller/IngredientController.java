@@ -1,6 +1,7 @@
 package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Ingredient;
+import com.groupproject.nstu.cookbook.entity.request.IngredientRequest;
 import com.groupproject.nstu.cookbook.service.IngredientServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class IngredientController {
     }
 
     @PostMapping("/createIngredient")
-    public void createIngredient(@RequestBody Ingredient ingredient){
-        ingredientService.createIngredient(ingredient);
+    public void createIngredient(@RequestBody IngredientRequest ingredientRequest){
+        ingredientService.createIngredient(ingredientRequest);
     }
 
     @GetMapping("/findById/{id}")
@@ -46,8 +47,8 @@ public class IngredientController {
     }
 
     @PutMapping("/updateById/{id}")
-    public ResponseEntity updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
-        return ingredientService.updateIngredient(id, ingredient);
+    public ResponseEntity updateIngredient(@PathVariable Long id, @RequestBody IngredientRequest ingredientRequest) {
+        return ingredientService.updateIngredient(id, ingredientRequest);
     }
 
     @DeleteMapping("/deleteById/{id}")

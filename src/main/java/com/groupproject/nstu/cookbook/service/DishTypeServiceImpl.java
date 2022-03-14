@@ -1,8 +1,7 @@
 package com.groupproject.nstu.cookbook.service;
 
-import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
-import com.groupproject.nstu.cookbook.entity.Ingredient;
+import com.groupproject.nstu.cookbook.entity.request.DishTypeRequest;
 import com.groupproject.nstu.cookbook.repository.DishTypeRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.DishTypeService;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,7 +30,10 @@ public class DishTypeServiceImpl implements DishTypeService {
     }
 
     @Override
-    public void createDishType(DishType dishType) {
+    public void createDishType(DishTypeRequest dishTypeRequest) {
+        DishType dishType = new DishType();
+        dishType.setName(dishTypeRequest.getName());
+
         dishTypeRepository.save(dishType);
     }
 
@@ -62,23 +64,22 @@ public class DishTypeServiceImpl implements DishTypeService {
     }
 
     @Override
-    public ResponseEntity updateDishType(Long id, DishType newDishType) {
+    public ResponseEntity updateDishType(Long id, DishTypeRequest dishTypeRequest) {
         try {
             Optional<DishType> dishType = findDishTypeById(id);
             if (dishType.isPresent())
             {
-                Optional<DishType> dishTypeForConstraintCheck = findDishTypeByName(newDishType.getName());
+                Optional<DishType> dishTypeForConstraintCheck = findDishTypeByName(dishTypeRequest.getName());
                 if (dishTypeForConstraintCheck.isPresent())
                     throw new SQLException("This dish type already exist");
                 else
-                    dishType.get().setName(newDishType.getName());
+                    dishType.get().setName(dishTypeRequest.getName());
             }
             else
                 throw new Exception("Didn't find such dish type");
 
             dishTypeRepository.save(dishType.get());
             return ResponseEntity.status(HttpStatus.OK).build();
-
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);

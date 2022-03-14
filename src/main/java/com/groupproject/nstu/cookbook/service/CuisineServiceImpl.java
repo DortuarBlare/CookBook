@@ -1,19 +1,15 @@
 package com.groupproject.nstu.cookbook.service;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
+import com.groupproject.nstu.cookbook.entity.request.CuisineRequest;
 import com.groupproject.nstu.cookbook.repository.CuisineRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.CuisineService;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +25,9 @@ public class CuisineServiceImpl implements CuisineService {
     }
 
     @Override
-    public void createCuisine(Cuisine cuisine) {
+    public void createCuisine(CuisineRequest cuisineRequest) {
+        Cuisine cuisine = new Cuisine();
+        cuisine.setName(cuisineRequest.getName());
         cuisineRepository.save(cuisine);
     }
 
@@ -65,16 +63,16 @@ public class CuisineServiceImpl implements CuisineService {
     }
 
     @Override
-    public ResponseEntity updateCuisine(Long id, Cuisine newCuisine) {
+    public ResponseEntity updateCuisine(Long id, CuisineRequest cuisineRequest) {
         try {
             Optional<Cuisine> cuisine = findCuisineById(id);
             if (cuisine.isPresent())
             {
-                Optional<Cuisine> cuisineForConstraintCheck = findCuisineByName(newCuisine.getName());
+                Optional<Cuisine> cuisineForConstraintCheck = findCuisineByName(cuisineRequest.getName());
                 if (cuisineForConstraintCheck.isPresent())
                     throw new SQLException("This cuisine already exist");
                 else
-                    cuisine.get().setName(newCuisine.getName());
+                    cuisine.get().setName(cuisineRequest.getName());
             }
             else
                 throw new Exception("Didn't find such cuisine");

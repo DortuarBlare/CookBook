@@ -1,6 +1,7 @@
 package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Dish;
+import com.groupproject.nstu.cookbook.entity.request.DishRequest;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -22,23 +23,9 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @GetMapping("/")
-    public String hello() {
-        return "This page is your DRUG! aahhahahaha";
-    }
-
-    @GetMapping("/user")
-    public String user() {
-        return "User";
-    }
-    @GetMapping("/admin")
-    public String admin() {
-        return "Admin";
-    }
-
     @PostMapping("/createDish")
-    public ResponseEntity createDish(@RequestBody Dish dish){
-        return dishService.createDish(dish);
+    public ResponseEntity createDish(@RequestBody DishRequest dishRequest) {
+        return dishService.createDish(dishRequest);
     }
 
     @GetMapping("/getAll")
@@ -72,8 +59,8 @@ public class DishController {
     }
 
     @PutMapping("/updateById/{id}")
-    public ResponseEntity updateDish(@PathVariable Long id, @RequestBody Dish dish) {
-        return dishService.updateDish(id, dish);
+    public ResponseEntity updateDish(@PathVariable Long id, @RequestBody DishRequest dishRequest) {
+        return dishService.updateDish(id, dishRequest);
     }
 
     @DeleteMapping("/deleteById/{id}")

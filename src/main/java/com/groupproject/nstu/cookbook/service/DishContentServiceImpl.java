@@ -1,6 +1,7 @@
 package com.groupproject.nstu.cookbook.service;
 
 import com.groupproject.nstu.cookbook.entity.*;
+import com.groupproject.nstu.cookbook.entity.request.DishContentRequest;
 import com.groupproject.nstu.cookbook.repository.DishContentRepository;
 import com.groupproject.nstu.cookbook.repository.DishRepository;
 import com.groupproject.nstu.cookbook.service.interfaces.DishContentService;
@@ -22,12 +23,17 @@ public class DishContentServiceImpl implements DishContentService {
     public DishContentServiceImpl(DishContentRepository dishContentRepository, DishRepository dishRepository, IngredientServiceImpl ingredientService) {
         this.dishContentRepository = dishContentRepository;
         this.dishRepository = dishRepository;
-//        this.dishService = dishService;
         this.ingredientService = ingredientService;
     }
 
     @Override
-    public void createDishContent(DishContent dishContent) {
+    public void createDishContent(DishContentRequest dishContentRequest) {
+        DishContent dishContent = new DishContent(
+                dishContentRequest.getAmountOfIngredient(),
+                dishRepository.getDishByName(dishContentRequest.getDish()).get(),
+                ingredientService.findIngredientByName(dishContentRequest.getIngredient()).get()
+        );
+
         dishContentRepository.save(dishContent);
     }
 
@@ -47,22 +53,22 @@ public class DishContentServiceImpl implements DishContentService {
     }
 
     @Override
-    public ResponseEntity updateDishContent(Long id, DishContent newDishContent) {
+    public ResponseEntity updateDishContent(Long id, DishContentRequest dishContentRequest) {
         try {
             Optional<DishContent> dishContentForUpdate = findDishContentById(id);
             if (dishContentForUpdate.isPresent()) {
                 // Обновление количества ингредиента
-                dishContentForUpdate.get().setAmountOfIngredient(newDishContent.getAmountOfIngredient());
+                dishContentForUpdate.get().setAmountOfIngredient(dishContentRequest.getAmountOfIngredient());
 
                 // Обновление блюда
-                Optional<Dish> dishForCheck = dishRepository.findById(newDishContent.getDish().getId());
+                Optional<Dish> dishForCheck = dishRepository.getDishByName(dishContentRequest.getDish());
                 if (dishForCheck.isPresent())
                     dishContentForUpdate.get().setDish(dishForCheck.get());
                 else
                     throw new Exception("Didn't find such dish");
 
                 // Обновление кухни блюда
-                Optional<Ingredient> ingredientForCheck = ingredientService.findIngredientById(newDishContent.getIngredient().getId());
+                Optional<Ingredient> ingredientForCheck = ingredientService.findIngredientByName(dishContentRequest.getIngredient());
                 if (ingredientForCheck.isPresent())
                     dishContentForUpdate.get().setIngredient(ingredientForCheck.get());
                 else

@@ -1,6 +1,7 @@
 package com.groupproject.nstu.cookbook.service.interfaces;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
+import com.groupproject.nstu.cookbook.entity.request.CuisineRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface CuisineService {
 
-    void createCuisine(Cuisine cuisine);
+    void createCuisine(CuisineRequest cuisineRequest);
 
     List<Cuisine> getAll();
 
@@ -18,7 +19,7 @@ public interface CuisineService {
 
     List<Cuisine> findCuisineByNames(String names);
 
-    ResponseEntity updateCuisine(Long id, Cuisine newCuisine);
+    ResponseEntity updateCuisine(Long id, CuisineRequest cuisineRequest);
 
     ResponseEntity deleteCuisine(Long id);
 

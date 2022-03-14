@@ -2,6 +2,7 @@ package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
+import com.groupproject.nstu.cookbook.entity.request.DishTypeRequest;
 import com.groupproject.nstu.cookbook.service.DishTypeServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class DishTypeController {
     }
 
     @PostMapping("/createDishType")
-    public void createDishType(@RequestBody DishType dishType) {
-        dishTypeService.createDishType(dishType);
+    public void createDishType(@RequestBody DishTypeRequest dishTypeRequest) {
+        dishTypeService.createDishType(dishTypeRequest);
     }
 
     @GetMapping("/getAll")
@@ -47,8 +48,8 @@ public class DishTypeController {
     }
 
     @PutMapping("/updateById/{id}")
-    public ResponseEntity updateDishType(@PathVariable Long id, @RequestBody DishType dishType) {
-        return dishTypeService.updateDishType(id, dishType);
+    public ResponseEntity updateDishType(@PathVariable Long id, @RequestBody DishTypeRequest dishTypeRequest) {
+        return dishTypeService.updateDishType(id, dishTypeRequest);
     }
 
     @DeleteMapping("/deleteById/{id}")

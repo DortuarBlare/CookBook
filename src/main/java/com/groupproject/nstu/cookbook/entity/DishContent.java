@@ -30,6 +30,14 @@ public class DishContent implements Serializable {
 //    @JsonBackReference
     private Ingredient ingredient;
 
+    public DishContent() {}
+
+    public DishContent(float amountOfIngredient, Dish dish, Ingredient ingredient) {
+        this.amountOfIngredient = amountOfIngredient;
+        this.dish = dish;
+        this.ingredient = ingredient;
+    }
+
     public Long getId() {
         return id;
     }

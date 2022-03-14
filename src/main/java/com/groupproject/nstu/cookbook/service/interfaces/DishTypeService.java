@@ -1,8 +1,7 @@
 package com.groupproject.nstu.cookbook.service.interfaces;
 
-import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.DishType;
-import com.groupproject.nstu.cookbook.entity.Ingredient;
+import com.groupproject.nstu.cookbook.entity.request.DishTypeRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -12,7 +11,7 @@ public interface DishTypeService {
 
     Optional<DishType> findDishTypeById(Long id);
 
-    void createDishType(DishType dishType);
+    void createDishType(DishTypeRequest dishTypeRequest);
 
     List<DishType> getAll();
 
@@ -20,7 +19,7 @@ public interface DishTypeService {
 
     List<DishType> findDishTypeByNames(String names);
 
-    ResponseEntity updateDishType(Long id, DishType newDishType);
+    ResponseEntity updateDishType(Long id, DishTypeRequest dishTypeRequest);
 
     ResponseEntity deleteDishType(Long id);
 }

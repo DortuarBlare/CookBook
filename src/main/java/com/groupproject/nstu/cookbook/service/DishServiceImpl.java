@@ -4,6 +4,7 @@ import com.groupproject.nstu.cookbook.entity.Cuisine;
 import com.groupproject.nstu.cookbook.entity.Dish;
 import com.groupproject.nstu.cookbook.entity.DishContent;
 import com.groupproject.nstu.cookbook.entity.Ingredient;
+import com.groupproject.nstu.cookbook.entity.request.DishRequest;
 import com.groupproject.nstu.cookbook.entity.response.DishResponse;
 import com.groupproject.nstu.cookbook.entity.response.DishResponseIngredient;
 import com.groupproject.nstu.cookbook.entity.DishType;
@@ -29,7 +30,7 @@ public class DishServiceImpl implements DishService {
     private final DishTypeServiceImpl dishTypeService;
     private final CuisineServiceImpl cuisineService;
 
-    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService,/*, DishContentServiceImpl dishContentService*/DishContentServiceImpl dishContentService) {
+    public DishServiceImpl(DishRepository dishRepository, DishTypeServiceImpl dishTypeService, CuisineServiceImpl cuisineService, IngredientServiceImpl ingredientService, DishContentServiceImpl dishContentService) {
         this.dishRepository = dishRepository;
         this.ingredientService = ingredientService;
         this.dishTypeService = dishTypeService;
@@ -43,10 +44,17 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public ResponseEntity createDish(Dish dish) {
-
+    public ResponseEntity createDish(DishRequest dishRequest) {
         try {
-            if (findDishByName(dish.getName()).isEmpty()) {
+            if (findDishByName(dishRequest.getName()).isEmpty()) {
+                Dish dish = new Dish(
+                        dishRequest.getName(),
+                        dishRequest.getDishPicture(),
+                        dishRequest.getCookingDescription(),
+                        dishTypeService.findDishTypeByName(dishRequest.getDishType()).get(),
+                        cuisineService.findCuisineByName(dishRequest.getCuisine()).get()
+                );
+
                 dishRepository.save(dish);
             } else
                 throw new SQLException("This dish already exist");
@@ -62,15 +70,13 @@ public class DishServiceImpl implements DishService {
     public List<Dish> getAll() {
         return dishRepository.findAll();
     }
-
-
+    
     @Override
     public Optional<Dish> findDishByName(String name) {
 
         return dishRepository.getDishByName(name);
 
     }
-
 
     @Override
     public Optional<DishResponse> findDishResponseByName(String name) {
@@ -231,31 +237,31 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public ResponseEntity updateDish(Long id, Dish newDish) {
+    public ResponseEntity updateDish(Long id, DishRequest dishRequest) {
         try {
             Optional<Dish> dishForUpdate = findDishById(id);
             if (dishForUpdate.isPresent()) {
                 // Обновление названия блюда
-                if (!dishForUpdate.get().getName().equals(newDish.getName())) {
-                    Optional<Dish> dishForConstraintCheck = findDishByName(newDish.getName());
+                if (!dishForUpdate.get().getName().equals(dishRequest.getName())) {
+                    Optional<Dish> dishForConstraintCheck = findDishByName(dishRequest.getName());
                     if (dishForConstraintCheck.isPresent())
                         throw new SQLException("This dish already exist");
                     else
-                        dishForUpdate.get().setName(newDish.getName());
+                        dishForUpdate.get().setName(dishRequest.getName());
                 }
 
                 // Обновление описания приготовления
-                dishForUpdate.get().setCookingDescription(newDish.getCookingDescription());
+                dishForUpdate.get().setCookingDescription(dishRequest.getCookingDescription());
 
                 // Обновление типа блюда
-                Optional<DishType> dishTypeForCheck = dishTypeService.findDishTypeById(newDish.getDishType().getId());
+                Optional<DishType> dishTypeForCheck = dishTypeService.findDishTypeByName(dishRequest.getDishType());
                 if (dishTypeForCheck.isPresent())
                     dishForUpdate.get().setDishType(dishTypeForCheck.get());
                 else
                     throw new Exception("Didn't find such dish type");
 
                 // Обновление кухни блюда
-                Optional<Cuisine> cuisineForCheck = cuisineService.findCuisineById(newDish.getDishCuisine().getId());
+                Optional<Cuisine> cuisineForCheck = cuisineService.findCuisineByName(dishRequest.getCuisine());
                 if (cuisineForCheck.isPresent())
                     dishForUpdate.get().setDishCuisine(cuisineForCheck.get());
                 else

@@ -59,8 +59,24 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<Dish> getAll() {
-        return dishRepository.findAll();
+    public List<DishResponse> getAll() {
+
+        List<DishResponse> dishResponseList = new ArrayList<>();
+        List<Dish> dishList = dishRepository.findAll();
+
+
+        for(Dish dish: dishList){
+
+            Optional<DishResponse> dishResponse = findDishResponseByName(dish.getName());
+
+            if(dishResponse.isPresent()){
+                dishResponseList.add(dishResponse.get());
+            }
+
+        }
+
+        return dishResponseList;
+
     }
 
 
@@ -100,6 +116,7 @@ public class DishServiceImpl implements DishService {
 
             dishResponseIngredient.setIngredientName(dishContent.getIngredient().getName());
             dishResponseIngredient.setAmountOfIngredient(dishContent.getAmountOfIngredient());
+            dishResponseIngredient.setMeasure(dishContent.getIngredient().getMeasure());
 
             dishResponse.getDishContentList().add(dishResponseIngredient);
 

@@ -14,7 +14,7 @@ public interface DishService {
 
     ResponseEntity createDish(Dish dish);
 
-    List<Dish> getAll();
+    List<DishResponse> getAll();
 
     Optional<DishResponse> findDishResponseByName(String name);
 

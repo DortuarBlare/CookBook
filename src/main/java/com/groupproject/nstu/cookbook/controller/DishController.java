@@ -42,7 +42,7 @@ public class DishController {
     }
 
     @GetMapping("/getAll")
-    public List<Dish> getAllDish(){
+    public List<DishResponse> getAllDish(){
         return dishService.getAll();
     }
 

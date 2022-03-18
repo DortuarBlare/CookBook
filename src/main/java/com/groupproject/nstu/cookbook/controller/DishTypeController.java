@@ -43,7 +43,7 @@ public class DishTypeController {
     }
 
     @GetMapping("/findByNames/{names}")
-    public List<DishType> findDishTypeByNames(String names) {
+    public List<DishType> findDishTypeByNames(@PathVariable String names) {
         return dishTypeService.findDishTypeByNames(names);
     }
 

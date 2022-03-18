@@ -42,7 +42,7 @@ public class IngredientController {
     }
 
     @GetMapping("/findByNames/{names}")
-    public List<Ingredient> findIngredientByNames(String names) {
+    public List<Ingredient> findIngredientByNames(@PathVariable String names) {
         return ingredientService.findIngredientByNames(names);
     }
 

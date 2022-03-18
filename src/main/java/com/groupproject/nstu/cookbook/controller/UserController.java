@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/findByAllFilters/{ingredients}/{dishType}/{cuisines}")
-    public List<DishResponse> findDishListByAllFilters(String ingredients, String dishType, String cuisines) {
+    public List<DishResponse> findDishListByAllFilters(@PathVariable String ingredients, @PathVariable String dishType, @PathVariable String cuisines) {
         return dishService.findDishByAllFilters(ingredients, dishType, cuisines);
     }
 
@@ -43,12 +43,12 @@ public class UserController {
     }
 
     @GetMapping("/findByNames/{names}")
-    public List<Dish> findDishByNames(String names) {
+    public List<Dish> findDishByNames(@PathVariable String names) {
         return dishService.findDishByNames(names);
     }
 
     @GetMapping("/findByCuisinesAndDishType/{cuisines}/{dishType}")
-    public List<Dish> findDishByCuisinesAndDishType(String cuisines, String dishType) {
+    public List<Dish> findDishByCuisinesAndDishType(@PathVariable String cuisines, @PathVariable String dishType) {
         return dishService.findDishByCuisinesAndDishType(cuisines, dishType);
     }
 }

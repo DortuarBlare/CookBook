@@ -33,13 +33,11 @@ public class Dish implements Serializable {
     private String cookingDescription;
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
     @JsonIgnore
     private List<DishContent> dishContentList = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "type_id")
-//    @JsonBackReference
     private DishType dishType;
 
     @ManyToOne(cascade = CascadeType.MERGE)

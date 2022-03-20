@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "cuisine_table")
 public class Cuisine implements Serializable {
-
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +22,6 @@ public class Cuisine implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "dishCuisine", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
     @JsonIgnore
     private List<Dish> cuisineDishList = new ArrayList<>();
 

@@ -22,20 +22,6 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @GetMapping("/")
-    public String hello() {
-        return "This page is your DRUG! aahhahahaha";
-    }
-
-    @GetMapping("/user")
-    public String user() {
-        return "User";
-    }
-    @GetMapping("/admin")
-    public String admin() {
-        return "Admin";
-    }
-
     @PostMapping("/createDish")
     public ResponseEntity createDish(@RequestBody Dish dish){
         return dishService.createDish(dish);

@@ -71,12 +71,10 @@ public class DishServiceImpl implements DishService {
                     dishContent.setDish(dishRequest.getDish());
                     dishContent.setAmountOfIngredient(dishRequestIngredient.getAmountOfIngredient());
 
-                    if(ingredientService.findIngredientByName(dishRequestIngredient.getIngredient().getName()).isEmpty()){
-
+                    if (ingredientService.findIngredientByName(dishRequestIngredient.getIngredient().getName()).isEmpty())
                         ingredientService.createIngredient(dishRequestIngredient.getIngredient());
-                        dishContent.setIngredient(dishRequestIngredient.getIngredient());
 
-                    }
+                    dishContent.setIngredient(dishRequestIngredient.getIngredient());
 
                     dishContent.getIngredient().setId(ingredientService.findIngredientByName(dishRequestIngredient.getIngredient().getName()).get().getId());
 
@@ -169,7 +167,7 @@ public class DishServiceImpl implements DishService {
 
                     }
 
-                    dishResponse.setPictureURL(dishContentList.get(0).getDish().getDishPicture());
+                    dishResponse.setPictureURL(dishContentList.get(0).getDish().getPictureURL());
 
                     List<DishResponse> dishResponseList = new ArrayList<>();
                     dishResponseList.add(dishResponse);
@@ -285,7 +283,7 @@ public class DishServiceImpl implements DishService {
                         dishResponse.setCookingDescription(tempDishContent.getDish().getCookingDescription());
                         dishResponse.setDishType(tempDishContent.getDish().getDishType().getName());
                         dishResponse.setDishCuisine(tempDishContent.getDish().getDishCuisine().getName());
-                        dishResponse.setPictureURL(tempDishContent.getDish().getDishPicture());
+                        dishResponse.setPictureURL(tempDishContent.getDish().getPictureURL());
 
                         for (DishContent dishContent : dishContentList) {
                             DishResponseIngredient dishResponseIngredient = new DishResponseIngredient();

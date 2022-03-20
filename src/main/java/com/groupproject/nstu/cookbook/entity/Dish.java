@@ -25,7 +25,7 @@ public class Dish implements Serializable {
     @Column(name = "dish_picture_url")
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    private String dishPicture;
+    private String pictureURL;
 
     @Column(name = "cooking_description")
     @Lob
@@ -96,12 +96,12 @@ public class Dish implements Serializable {
         this.dishCuisine = dishCuisine;
     }
 
-    public String getDishPicture() {
-        return dishPicture;
+    public String getPictureURL() {
+        return pictureURL;
     }
 
-    public void setDishPicture(String dishPicture) {
-        this.dishPicture = dishPicture;
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 
     public List<DishContent> getDishContentList() {

@@ -55,6 +55,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
+                "http://192.168.0.11:8080",
+                "https://192.168.0.11:8080",
+                "http://192.168.0.11:8080/",
+                "192.168.0.11:8080",
                 "http://localhost:8080",
                 "http://localhost:80",
                 "http://localhost",

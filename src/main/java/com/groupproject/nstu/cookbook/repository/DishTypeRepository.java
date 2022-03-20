@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface DishTypeRepository extends JpaRepository<DishType, Long>, JpaSpecificationExecutor<DishType> {
 
-    @Query("select dt from DishType dt where dt.name = lower(:name)")
+    @Query("select dt from DishType dt where lower(dt.name) = lower(:name)")
     Optional<DishType> getDishTypeByName(@Param("name") String name);
 
 }

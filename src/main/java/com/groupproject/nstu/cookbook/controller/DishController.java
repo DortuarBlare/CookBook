@@ -1,6 +1,7 @@
 package com.groupproject.nstu.cookbook.controller;
 
 import com.groupproject.nstu.cookbook.entity.Dish;
+import com.groupproject.nstu.cookbook.entity.response.DishRequest;
 import com.groupproject.nstu.cookbook.service.DishServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +37,24 @@ public class DishController {
         return "Admin";
     }
 
-    @PostMapping("/createDish")
-    public ResponseEntity createDish(@RequestBody Dish dish){
-        return dishService.createDish(dish);
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
-    @GetMapping("/getAll")
-    public List<DishResponse> getAllDish(){
-        return dishService.getAll();
+    @PostMapping("/createDish")
+    public ResponseEntity createDish(@RequestBody DishRequest dishRequest){
+        return dishService.createDish(dishRequest);
+    }
+
+    @GetMapping("/getAllDishResponse")
+    public List<DishResponse> getAllDishResponse(){
+        return dishService.getAllDishResponse();
+    }
+
+    @GetMapping("/getAllDish")
+    public List<Dish> getAllDish(){
+        return dishService.getAllDish();
     }
 
     @GetMapping("/findByAllFilters/{ingredients}/{dishType}/{cuisines}")
@@ -57,7 +68,7 @@ public class DishController {
     }
 
     @GetMapping("/findByName/{name}")
-    public Optional<DishResponse> findDishResponseByName(@PathVariable String name) {
+    public List<DishResponse> findDishResponseByName(@PathVariable String name) {
         return dishService.findDishResponseByName(name);
     }
 

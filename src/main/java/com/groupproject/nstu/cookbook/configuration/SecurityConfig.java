@@ -18,47 +18,38 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+//    }
+//
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .cors().and()
-                .authorizeRequests()
-                .antMatchers("/dish/**").hasRole( "ADMIN")
-                .antMatchers("/cuisine/**").hasRole( "ADMIN")
-                .antMatchers("/ingredient/**").hasRole( "ADMIN")
-                .antMatchers("/dishType/**").hasRole( "ADMIN")
-                .antMatchers("/dishContent/**").hasRole( "ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                //.antMatchers("/**").permitAll()
-                .and().formLogin();
+                .cors();
     }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/webjars/**");
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user")
-                .password("user")
-                .authorities("ROLE_USER")
-                .and()
-                .withUser("admin")
-                .password("admin")
-                .authorities("ROLE_ADMIN");
-    }
+//
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/v2/api-docs",
+//                "/configuration/ui",
+//                "/swagger-resources/**",
+//                "/configuration/security",
+//                "/swagger-ui.html",
+//                "/webjars/**");
+//    }
+//
+//    @Override
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("user")
+//                .password("user")
+//                .authorities("ROLE_USER")
+//                .and()
+//                .withUser("admin")
+//                .password("admin")
+//                .authorities("ROLE_ADMIN");
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

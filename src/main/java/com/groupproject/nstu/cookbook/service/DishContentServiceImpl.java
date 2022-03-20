@@ -28,6 +28,7 @@ public class DishContentServiceImpl implements DishContentService {
 
     @Override
     public void createDishContent(DishContent dishContent) {
+
         dishContentRepository.save(dishContent);
     }
 

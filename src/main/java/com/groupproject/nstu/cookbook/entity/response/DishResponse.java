@@ -5,6 +5,7 @@ import java.util.List;
 
 public class DishResponse {
 
+    private Long dishID;
     private String name;
     private String cookingDescription;
     private String dishType;
@@ -12,6 +13,13 @@ public class DishResponse {
     private String pictureURL;
     private List<DishResponseIngredient> dishContentList = new ArrayList<>();
 
+    public Long getDishID() {
+        return dishID;
+    }
+
+    public void setDishID(Long dishID) {
+        this.dishID = dishID;
+    }
 
     public String getName() {
         return name;

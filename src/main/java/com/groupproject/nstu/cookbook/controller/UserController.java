@@ -22,9 +22,9 @@ public class UserController {
         this.dishService = dishService;
     }
 
-    @GetMapping("/getAll")
-    public List<DishResponse> getAllDish(){
-        return dishService.getAll();
+    @GetMapping("/getAllDishResponse")
+    public List<DishResponse> getAllDishResponse(){
+        return dishService.getAllDishResponse();
     }
 
     @GetMapping("/findByAllFilters/{ingredients}/{dishType}/{cuisines}")
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/findByName/{name}")
-    public Optional<DishResponse> findDishResponseByName(@PathVariable String name) {
+    public List<DishResponse> findDishResponseByName(@PathVariable String name) {
         return dishService.findDishResponseByName(name);
     }
 

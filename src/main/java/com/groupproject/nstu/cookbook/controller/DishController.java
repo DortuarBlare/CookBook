@@ -49,7 +49,9 @@ public class DishController {
 
     @GetMapping("/getAllDishResponse")
     public List<DishResponse> getAllDishResponse(){
+
         return dishService.getAllDishResponse();
+
     }
 
     @GetMapping("/getAllDish")

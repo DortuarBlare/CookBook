@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  cookbook-api:
+    image: "cookbook:latest"
+    build:
+      context: .
+    container_name: "cookbook-api"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "cookbook-db"
+  cookbook-db:
+    image: "postgres:latest"
+    container_name: "cookbook-db"
+    ports:
+      - "5434:5432"
+    environment:
+      - "POSTGRES_USER=user"
+      - "POSTGRES_PASSWORD=130263"
+      - "POSTGRES_DB=cookbookDB"
